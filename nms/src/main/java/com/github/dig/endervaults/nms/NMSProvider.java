@@ -2,7 +2,11 @@ package com.github.dig.endervaults.nms;
 
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
+import lombok.extern.java.Log;
 
+import java.util.logging.Level;
+
+@Log
 @UtilityClass
 public class NMSProvider {
 
@@ -15,6 +19,7 @@ public class NMSProvider {
         if (bridge == null) {
             bridge = instance;
             version = ver;
+            log.log(Level.INFO, "[EnderVaults] Found version: " + version.toString() + ", supported!");
         }
     }
 }
