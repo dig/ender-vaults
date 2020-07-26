@@ -1,0 +1,17 @@
+# Configuration for the selector
+selector:
+  # 9 slots in each row
+  # double chest is 6
+  # single chest is 3
+  rows: 6
+  # Should pages be enabled?
+  # If disabled, players won't be able to access
+  # all their vaults from the selector.
+  pages: true
+
+# Configuration for each vault
+vault:
+  # 9 slots in each row
+  # double chest is 6
+  # single chest is 3
+  default-rows: 3

@@ -2,8 +2,8 @@ package com.github.dig.endervaults.bukkit.vault;
 
 import com.github.dig.endervaults.api.EnderVaultsPlugin;
 import com.github.dig.endervaults.api.PluginProvider;
-import com.github.dig.endervaults.api.exception.InvalidMinecraftVersionException;
-import com.github.dig.endervaults.api.nms.VaultNMS;
+import com.github.dig.endervaults.nms.NMSProvider;
+import com.github.dig.endervaults.nms.VaultNMS;
 import com.github.dig.endervaults.api.util.VaultSerializable;
 import com.github.dig.endervaults.api.vault.Vault;
 import lombok.extern.java.Log;
@@ -24,17 +24,12 @@ public class BukkitVault implements Vault, VaultSerializable {
     private UUID ownerUUID;
     private Inventory inventory;
 
-    private VaultNMS nmsBridge = null;
+    private VaultNMS nmsBridge = NMSProvider.getBridge();
 
     public BukkitVault(UUID id, String title, int size, UUID ownerUUID) {
         this.id = id;
         this.ownerUUID = ownerUUID;
         this.inventory = Bukkit.createInventory(null, size, title);
-        try {
-            this.nmsBridge = PluginProvider.getPlugin().getNMSBridge();
-        } catch (InvalidMinecraftVersionException e) {
-            log.log(Level.SEVERE, "Unable to get NMS Bridge for your Minecraft version.");
-        }
     }
 
     @Override
@@ -111,6 +106,6 @@ public class BukkitVault implements Vault, VaultSerializable {
 
     private Class<?> getCraftItemStackClass() throws ClassNotFoundException {
         EnderVaultsPlugin plugin = PluginProvider.getPlugin();
-        return Class.forName("org.bukkit.craftbukkit." + plugin.getServerVersion().toString() + ".inventory.CraftItemStack");
+        return Class.forName("org.bukkit.craftbukkit." + plugin.getVersion().toString() + ".inventory.CraftItemStack");
     }
 }

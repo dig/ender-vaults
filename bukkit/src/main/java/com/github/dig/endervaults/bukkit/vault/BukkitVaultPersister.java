@@ -8,6 +8,11 @@ import java.util.UUID;
 public class BukkitVaultPersister implements VaultPersister {
 
     @Override
+    public boolean exists(UUID ownerUUID, UUID id) {
+        return false;
+    }
+
+    @Override
     public Vault load(UUID ownerUUID, UUID id) {
         return null;
     }

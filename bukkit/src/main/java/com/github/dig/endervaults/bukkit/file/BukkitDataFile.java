@@ -1,7 +1,6 @@
 package com.github.dig.endervaults.bukkit.file;
 
 import com.github.dig.endervaults.api.file.DataFile;
-import lombok.Getter;
 import lombok.extern.java.Log;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,15 +10,19 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 @Log
-public class BukkitDataFile implements DataFile {
+public class BukkitDataFile implements DataFile<FileConfiguration> {
 
-    @Getter
-    private FileConfiguration configuration;
     private final File file;
+    private FileConfiguration configuration;
 
     public BukkitDataFile(File file) {
         this.file = file;
         this.load();
+    }
+
+    @Override
+    public FileConfiguration getConfiguration() {
+        return configuration;
     }
 
     @Override

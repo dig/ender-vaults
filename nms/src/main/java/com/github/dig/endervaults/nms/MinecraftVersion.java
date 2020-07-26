@@ -1,4 +1,4 @@
-package com.github.dig.endervaults.api.nms;
+package com.github.dig.endervaults.nms;
 
 public enum MinecraftVersion {
 

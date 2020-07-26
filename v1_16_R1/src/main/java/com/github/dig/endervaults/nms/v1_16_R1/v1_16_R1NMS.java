@@ -1,6 +1,6 @@
 package com.github.dig.endervaults.nms.v1_16_R1;
 
-import com.github.dig.endervaults.api.nms.VaultNMS;
+import com.github.dig.endervaults.nms.VaultNMS;
 import lombok.extern.java.Log;
 import net.minecraft.server.v1_16_R1.*;
 
@@ -24,7 +24,7 @@ public class v1_16_R1NMS implements VaultNMS {
             readNbt = NBTCompressedStreamTools.class.getDeclaredMethod("a", DataInput.class, Integer.TYPE, NBTReadLimiter.class);
             readNbt.setAccessible(true);
         } catch (NoSuchMethodException e) {
-            log.log(Level.SEVERE, "[EnderVaults] Unable to find writeNbt or readNbt method. Are you sure we support this minecraft version?", e);
+            log.log(Level.SEVERE, "[EnderVaults] Unable to find writeNbt or readNbt method. Are you sure we support this Minecraft version?", e);
         }
     }
 

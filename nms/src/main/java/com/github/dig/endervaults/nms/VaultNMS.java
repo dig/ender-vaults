@@ -1,6 +1,4 @@
-package com.github.dig.endervaults.api.nms;
-
-import com.github.dig.endervaults.api.PluginProvider;
+package com.github.dig.endervaults.nms;
 
 public interface VaultNMS {
 
@@ -9,7 +7,7 @@ public interface VaultNMS {
     Object[] decode(String encoded);
 
     default Class<?> getItemStackClass() throws ClassNotFoundException {
-        MinecraftVersion minecraftVersion = PluginProvider.getPlugin().getServerVersion();
+        MinecraftVersion minecraftVersion = NMSProvider.getVersion();
         return Class.forName("net.minecraft.server." + minecraftVersion.toString() + ".ItemStack");
     }
 }

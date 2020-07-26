@@ -2,7 +2,9 @@ package com.github.dig.endervaults.api.file;
 
 import java.io.File;
 
-public interface DataFile {
+public interface DataFile<T> {
+
+    T getConfiguration();
 
     File getFile();
 
