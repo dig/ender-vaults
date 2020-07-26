@@ -17,10 +17,10 @@ public class BukkitLanguage implements Language {
     public String get(Lang lang, Map<String, Object> placeholders) {
         FileConfiguration configuration = (FileConfiguration) langFile.getConfiguration();
         String text = configuration.getString(lang.getKey());
-        placeholders.keySet().forEach(key -> {
+        for (String key : placeholders.keySet()) {
             Object value = placeholders.get(key);
-            text.replaceAll("%" + key, String.valueOf(value));
-        });
+            text = text.replaceAll("%" + key, String.valueOf(value));
+        }
         return ChatColor.translateAlternateColorCodes('&', text);
     }
 }
