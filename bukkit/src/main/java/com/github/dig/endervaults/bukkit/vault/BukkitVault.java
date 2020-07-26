@@ -60,7 +60,7 @@ public class BukkitVault implements Vault, VaultSerializable {
         try {
             nmsItemStackClazz = nmsBridge.getItemStackClass();
         } catch (ClassNotFoundException e) {
-            log.log(Level.SEVERE, "Unable to find craft item stack class.", e);
+            log.log(Level.SEVERE, "[EnderVaults] Unable to find craft item stack class.", e);
             return null;
         }
 
@@ -69,7 +69,7 @@ public class BukkitVault implements Vault, VaultSerializable {
             try {
                 Array.set(nmsItemArray, i, toNMSItem(inventoryContents[i]));
             } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                log.log(Level.SEVERE, "Unable to encode item.", e);
+                log.log(Level.SEVERE, "[EnderVaults] Unable to encode item.", e);
             }
         }
 
@@ -84,7 +84,7 @@ public class BukkitVault implements Vault, VaultSerializable {
             try {
                 inventoryContents[i] = toBukkitItem(nmsItemStacks[i]);
             } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                log.log(Level.SEVERE, "Unable to decode item.", e);
+                log.log(Level.SEVERE, "[EnderVaults] Unable to decode item.", e);
             }
         }
 
@@ -96,7 +96,7 @@ public class BukkitVault implements Vault, VaultSerializable {
         try {
             nmsItemStackClazz = nmsBridge.getItemStackClass();
         } catch (ClassNotFoundException e) {
-            log.log(Level.SEVERE, "Unable to find craft item stack class.", e);
+            log.log(Level.SEVERE, "[EnderVaults] Unable to find craft item stack class.", e);
             return null;
         }
 

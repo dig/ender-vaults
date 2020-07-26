@@ -4,6 +4,8 @@ import com.github.dig.endervaults.api.exception.InvalidMinecraftVersionException
 import com.github.dig.endervaults.api.file.DataFile;
 import com.github.dig.endervaults.api.nms.MinecraftVersion;
 import com.github.dig.endervaults.api.nms.VaultNMS;
+import com.github.dig.endervaults.api.vault.VaultPersister;
+import com.github.dig.endervaults.api.vault.VaultRegistry;
 import com.github.dig.endervaults.nms.v1_16_R1.v1_16_R1NMS;
 
 public interface EnderVaultsPlugin {
@@ -13,6 +15,10 @@ public interface EnderVaultsPlugin {
     DataFile getLangFile();
 
     DataFile getConfigFile();
+
+    VaultRegistry getRegistry();
+
+    VaultPersister getPersister();
 
     default VaultNMS getNMSBridge() throws InvalidMinecraftVersionException {
         MinecraftVersion version = getServerVersion();

@@ -5,7 +5,11 @@ import com.github.dig.endervaults.api.PluginProvider;
 import com.github.dig.endervaults.api.exception.PluginAlreadySetException;
 import com.github.dig.endervaults.api.file.DataFile;
 import com.github.dig.endervaults.api.nms.MinecraftVersion;
+import com.github.dig.endervaults.api.vault.VaultPersister;
+import com.github.dig.endervaults.api.vault.VaultRegistry;
 import com.github.dig.endervaults.bukkit.file.BukkitDataFile;
+import com.github.dig.endervaults.bukkit.vault.BukkitVaultPersister;
+import com.github.dig.endervaults.bukkit.vault.BukkitVaultRegistry;
 import lombok.extern.java.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,6 +22,9 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
 
     private DataFile langFile;
     private DataFile configFile;
+
+    private VaultRegistry registry;
+    private VaultPersister persister;
 
     @Override
     public MinecraftVersion getServerVersion() {
@@ -38,6 +45,16 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
     }
 
     @Override
+    public VaultRegistry getRegistry() {
+        return registry;
+    }
+
+    @Override
+    public VaultPersister getPersister() {
+        return persister;
+    }
+
+    @Override
     public void onEnable() {
         try {
             PluginProvider.set(this);
@@ -49,5 +66,8 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
 
         langFile = new BukkitDataFile(new File(getDataFolder(), "lang.yml"));
         configFile = new BukkitDataFile(new File(getDataFolder(), "config.yml"));
+
+        registry = new BukkitVaultRegistry();
+        persister = new BukkitVaultPersister();
     }
 }
