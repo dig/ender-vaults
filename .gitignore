@@ -1,0 +1,23 @@
+# IntelliJ IDEA
+.idea
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Maven
+target/
+dependency-reduced-pom.xml
+
+# Gradle
+.gradle
+build/
+bin
+
+# Build
+out/
+
+# MacOS
+.DS_Store
+# Ignore Gradle build output directory
+build
