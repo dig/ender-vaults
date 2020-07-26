@@ -1,13 +1,16 @@
 package com.github.dig.endervaults.api.vault;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface VaultRegistry {
 
-    Vault get(UUID ownerUUID, UUID id);
+    Optional<Vault> get(UUID ownerUUID, UUID id);
 
     Map<UUID, Vault> get(UUID ownerUUID);
 
-    UUID register(UUID ownerUUID, Vault vault);
+    Optional<Vault> getByMetadata(UUID ownerUUID, String key, Object value);
+
+    void register(UUID ownerUUID, Vault vault);
 }

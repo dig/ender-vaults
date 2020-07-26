@@ -1,12 +1,14 @@
 package com.github.dig.endervaults.bukkit.file;
 
+import com.github.dig.endervaults.api.PluginProvider;
 import com.github.dig.endervaults.api.file.DataFile;
+import com.github.dig.endervaults.bukkit.EVBukkitPlugin;
+import com.google.common.io.ByteStreams;
 import lombok.extern.java.Log;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.logging.Level;
 
 @Log
@@ -33,8 +35,17 @@ public class BukkitDataFile implements DataFile<FileConfiguration> {
     @Override
     public void load() {
         try {
+            if (!file.exists()) {
+                EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
+                plugin.getDataFolder().mkdirs();
+
+                try (InputStream is = plugin.getResource(file.getName());
+                     OutputStream os = new FileOutputStream(file)) {
+                    ByteStreams.copy(is, os);
+                }
+            }
             configuration = YamlConfiguration.loadConfiguration(file);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | IOException e) {
             log.log(Level.SEVERE, "[EnderVaults] Unable to read file " + file.getName() + "!", e);
         }
     }

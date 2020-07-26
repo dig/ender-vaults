@@ -15,7 +15,6 @@ import com.github.dig.endervaults.bukkit.lang.BukkitLanguage;
 import com.github.dig.endervaults.bukkit.vault.BukkitVaultPersister;
 import com.github.dig.endervaults.bukkit.vault.BukkitVaultRegistry;
 import com.github.dig.endervaults.nms.NMSProvider;
-import com.github.dig.endervaults.nms.VaultNMS;
 import com.github.dig.endervaults.nms.v1_16_R1.v1_16_R1NMS;
 import lombok.extern.java.Log;
 import org.bukkit.Bukkit;

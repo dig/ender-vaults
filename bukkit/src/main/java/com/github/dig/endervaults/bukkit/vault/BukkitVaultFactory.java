@@ -4,6 +4,8 @@ import com.github.dig.endervaults.api.EnderVaultsPlugin;
 import com.github.dig.endervaults.api.PluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;
 import com.github.dig.endervaults.api.vault.Vault;
+import org.bukkit.configuration.file.FileConfiguration;
+
 import java.util.Map;
 import java.util.UUID;
 
@@ -12,7 +14,11 @@ public class BukkitVaultFactory {
     private static final EnderVaultsPlugin plugin = PluginProvider.getPlugin();
 
     public static Vault create(UUID ownerUUID, Map<String, Object> metadata) {
+        FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
+
         String title = plugin.getLanguage().get(Lang.VAULT_TITLE, metadata);
-        return null;
+        int size = configuration.getInt("vault.default-rows", 3) * 9;
+
+        return new BukkitVault(UUID.randomUUID(), title, size, ownerUUID, metadata);
     }
 }

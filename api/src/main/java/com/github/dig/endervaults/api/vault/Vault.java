@@ -1,5 +1,6 @@
 package com.github.dig.endervaults.api.vault;
 
+import java.util.Map;
 import java.util.UUID;
 
 public interface Vault {
@@ -9,5 +10,7 @@ public interface Vault {
     UUID getOwner();
 
     int getSize();
+
+    Map<String, Object> getMetadata();
 
 }

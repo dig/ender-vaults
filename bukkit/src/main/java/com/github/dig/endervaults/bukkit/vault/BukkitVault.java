@@ -8,12 +8,15 @@ import com.github.dig.endervaults.api.util.VaultSerializable;
 import com.github.dig.endervaults.api.vault.Vault;
 import lombok.extern.java.Log;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -23,13 +26,20 @@ public class BukkitVault implements Vault, VaultSerializable {
     private UUID id;
     private UUID ownerUUID;
     private Inventory inventory;
+    private Map<String, Object> metadata;
 
-    private VaultNMS nmsBridge = NMSProvider.getBridge();
+    private final VaultNMS nmsBridge = NMSProvider.getBridge();
 
     public BukkitVault(UUID id, String title, int size, UUID ownerUUID) {
         this.id = id;
         this.ownerUUID = ownerUUID;
         this.inventory = Bukkit.createInventory(null, size, title);
+        this.metadata = new HashMap<>();
+    }
+
+    public BukkitVault(UUID id, String title, int size, UUID ownerUUID, Map<String, Object> metadata) {
+        this(id, title, size, ownerUUID);
+        this.metadata = metadata;
     }
 
     @Override
@@ -45,6 +55,11 @@ public class BukkitVault implements Vault, VaultSerializable {
     @Override
     public int getSize() {
         return inventory.getSize();
+    }
+
+    @Override
+    public Map<String, Object> getMetadata() {
+        return metadata;
     }
 
     @Override
@@ -84,6 +99,10 @@ public class BukkitVault implements Vault, VaultSerializable {
         }
 
         inventory.setContents(inventoryContents);
+    }
+
+    public void launchFor(Player player) {
+        player.openInventory(inventory);
     }
 
     private ItemStack toBukkitItem(Object itemStack) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {

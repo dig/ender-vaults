@@ -4,9 +4,11 @@ import com.github.dig.endervaults.api.vault.Vault;
 import com.github.dig.endervaults.api.vault.VaultRegistry;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import org.javatuples.Pair;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public class BukkitVaultRegistry implements VaultRegistry {
@@ -17,8 +19,8 @@ public class BukkitVaultRegistry implements VaultRegistry {
     }
 
     @Override
-    public Vault get(UUID ownerUUID, UUID id) {
-        return vaults.get(ownerUUID, id);
+    public Optional<Vault> get(UUID ownerUUID, UUID id) {
+        return Optional.ofNullable(vaults.get(ownerUUID, id));
     }
 
     @Override
@@ -27,9 +29,18 @@ public class BukkitVaultRegistry implements VaultRegistry {
     }
 
     @Override
-    public UUID register(UUID ownerUUID, Vault vault) {
-        UUID id = UUID.randomUUID();
-        vaults.put(ownerUUID, id, vault);
-        return id;
+    public Optional<Vault> getByMetadata(UUID ownerUUID, String key, Object value) {
+        return get(ownerUUID).values()
+                .stream()
+                .filter(vault -> vault.getMetadata().get(key) != null)
+                .map(vault -> new Pair<>(vault, vault.getMetadata().get(key)))
+                .filter(vaultObjectPair -> vaultObjectPair.getValue1().equals(value))
+                .map(vaultObjectPair -> vaultObjectPair.getValue0())
+                .findFirst();
+    }
+
+    @Override
+    public void register(UUID ownerUUID, Vault vault) {
+        vaults.put(ownerUUID, vault.getId(), vault);
     }
 }

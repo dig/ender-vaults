@@ -33,5 +33,6 @@ subprojects {
         annotationProcessor 'org.projectlombok:lombok:1.18.8'
         compileOnly 'org.projectlombok:lombok:1.18.8'
         testImplementation 'com.google.code.findbugs:jsr305:3.0.2'
+        compile 'org.javatuples:javatuples:1.2'
     }
 }
