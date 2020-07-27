@@ -1,6 +1,7 @@
 package com.github.dig.endervaults.bukkit;
 
 import com.github.dig.endervaults.api.PluginProvider;
+import com.github.dig.endervaults.api.util.AsyncHelper;
 import com.github.dig.endervaults.api.vault.VaultPersister;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,11 +16,11 @@ public class BukkitListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event) {
-        persister.load(event.getPlayer().getUniqueId());
+        AsyncHelper.executor().execute(() -> persister.load(event.getPlayer().getUniqueId()));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onQuit(PlayerQuitEvent event) {
-        persister.save(event.getPlayer().getUniqueId());
+        AsyncHelper.executor().execute(() -> persister.save(event.getPlayer().getUniqueId()));
     }
 }

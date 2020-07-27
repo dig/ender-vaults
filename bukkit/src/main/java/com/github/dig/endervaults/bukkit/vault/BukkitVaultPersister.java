@@ -2,6 +2,7 @@ package com.github.dig.endervaults.bukkit.vault;
 
 import com.github.dig.endervaults.api.PluginProvider;
 import com.github.dig.endervaults.api.storage.DataStorage;
+import com.github.dig.endervaults.api.util.AsyncHelper;
 import com.github.dig.endervaults.api.vault.VaultPersister;
 import com.github.dig.endervaults.api.vault.VaultRegistry;
 import lombok.extern.java.Log;
@@ -24,7 +25,7 @@ public class BukkitVaultPersister implements VaultPersister {
     public void load(UUID ownerUUID) {
         registry.clean(ownerUUID);
         dataStorage.load(ownerUUID).forEach(vault -> registry.register(ownerUUID, vault));
-        persisted.add(ownerUUID);
+        finish(ownerUUID);
     }
 
     @Override
@@ -38,7 +39,7 @@ public class BukkitVaultPersister implements VaultPersister {
             }
         });
 
-        persisted.remove(ownerUUID);
+        remove(ownerUUID);
         registry.clean(ownerUUID);
     }
 
@@ -53,5 +54,13 @@ public class BukkitVaultPersister implements VaultPersister {
     @Override
     public boolean isLoaded(UUID ownerUUID) {
         return persisted.contains(ownerUUID);
+    }
+
+    private synchronized void finish(UUID ownerUUID) {
+        persisted.add(ownerUUID);
+    }
+
+    private synchronized void remove(UUID ownerUUID) {
+        persisted.remove(ownerUUID);
     }
 }

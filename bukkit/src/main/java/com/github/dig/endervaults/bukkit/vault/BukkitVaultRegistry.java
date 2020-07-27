@@ -40,12 +40,12 @@ public class BukkitVaultRegistry implements VaultRegistry {
     }
 
     @Override
-    public void register(UUID ownerUUID, Vault vault) {
+    public synchronized void register(UUID ownerUUID, Vault vault) {
         vaults.put(ownerUUID, vault.getId(), vault);
     }
 
     @Override
-    public void clean(UUID ownerUUID) {
+    public synchronized void clean(UUID ownerUUID) {
         vaults.row(ownerUUID).clear();
     }
 }
