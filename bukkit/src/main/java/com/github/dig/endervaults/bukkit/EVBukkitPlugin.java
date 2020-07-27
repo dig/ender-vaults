@@ -107,6 +107,7 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
     @Override
     public void onDisable() {
         persister.save();
+        dataStorage.close();
     }
 
     private boolean setProviders() {
@@ -146,6 +147,9 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
                 dataStorage = new YamlStorage();
                 break;
         }
+
+        dataStorage.init();
+        log.log(Level.INFO, "[EnderVaults] Using data storage: " + storage.toString() + ".");
     }
 
     private void setupManagers() {
