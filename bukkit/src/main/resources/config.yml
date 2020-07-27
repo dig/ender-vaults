@@ -50,3 +50,8 @@ storage:
         prepStmtCacheSqlLimit: '2048'
         useSSL: 'true'
         verifyServerCertificate: 'true'
+
+      # Table names
+      tables:
+        vault: 'endervaults_vault'
+        vault-metadata: 'endervaults_vault_metadata'
