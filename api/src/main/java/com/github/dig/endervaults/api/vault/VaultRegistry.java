@@ -13,4 +13,6 @@ public interface VaultRegistry {
     Optional<Vault> getByMetadata(UUID ownerUUID, String key, Object value);
 
     void register(UUID ownerUUID, Vault vault);
+
+    void clean(UUID ownerUUID);
 }

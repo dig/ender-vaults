@@ -1,23 +1,22 @@
 package com.github.dig.endervaults.bukkit.storage;
 
 import com.github.dig.endervaults.api.PluginProvider;
-import com.github.dig.endervaults.api.file.DataFile;
 import com.github.dig.endervaults.api.lang.Lang;
 import com.github.dig.endervaults.api.storage.DataStorage;
 import com.github.dig.endervaults.api.util.VaultSerializable;
 import com.github.dig.endervaults.api.vault.Vault;
 import com.github.dig.endervaults.api.vault.metadata.VaultMetadataRegistry;
 import com.github.dig.endervaults.bukkit.EVBukkitPlugin;
-import com.github.dig.endervaults.bukkit.file.BukkitDataFile;
 import com.github.dig.endervaults.bukkit.vault.BukkitVault;
+import com.google.common.io.Files;
 import lombok.extern.java.Log;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Level;
 
 @Log
 public class YamlStorage implements DataStorage {
@@ -38,12 +37,16 @@ public class YamlStorage implements DataStorage {
     }
 
     @Override
-    public List<UUID> getAll(UUID ownerUUID) {
-        List<UUID> vaults = new ArrayList<>();
+    public List<Vault> load(UUID ownerUUID) {
+        List<Vault> vaults = new ArrayList<>();
 
         File file = getOwnerFolder(ownerUUID);
         if (file.isDirectory()) {
-
+            File[] files = file.listFiles((File f, String name) -> name.endsWith(".yml"));
+            for (File vaultFile : files) {
+                UUID id = UUID.fromString(Files.getNameWithoutExtension(vaultFile.getName()));
+                load(ownerUUID, id).ifPresent(vault -> vaults.add(vault));
+            }
         }
 
         return vaults;
@@ -52,8 +55,7 @@ public class YamlStorage implements DataStorage {
     @Override
     public Optional<Vault> load(UUID ownerUUID, UUID id) {
         if (!exists(ownerUUID, id)) return Optional.empty();
-        DataFile dataFile = new BukkitDataFile(getVaultFile(ownerUUID, id));
-        FileConfiguration configuration = (FileConfiguration) dataFile.getConfiguration();
+        FileConfiguration configuration = YamlConfiguration.loadConfiguration(getVaultFile(ownerUUID, id));
 
         int size = configuration.getInt("size");
 
@@ -76,19 +78,12 @@ public class YamlStorage implements DataStorage {
     }
 
     @Override
-    public void save(Vault vault) {
+    public void save(Vault vault) throws IOException {
         File file = getVaultFile(vault.getOwner(), vault.getId());
         file.getParentFile().mkdirs();
+        file.createNewFile();
 
-        try {
-            file.createNewFile();
-        } catch (IOException e) {
-            log.log(Level.SEVERE, "[EnderVaults] Unable to create file for vault.", e);
-            return;
-        }
-
-        DataFile dataFile = new BukkitDataFile(file);
-        FileConfiguration configuration = (FileConfiguration) dataFile.getConfiguration();
+        FileConfiguration configuration = YamlConfiguration.loadConfiguration(file);
 
         configuration.set("size", vault.getSize());
         for (String key : vault.getMetadata().keySet()) {
@@ -99,7 +94,7 @@ public class YamlStorage implements DataStorage {
         VaultSerializable serializable = (VaultSerializable) vault;
         configuration.set("contents", serializable.encode());
 
-        dataFile.save();
+        configuration.save(file);
     }
 
     private File getOwnerFolder(UUID ownerUUID) {
