@@ -34,6 +34,8 @@ storage:
       # Possible file formats:
       #   - YAML
       type: YAML
+      # Where the data will be saved
+      directory: 'data'
     mysql:
       # Address and port. Can specify as "host:port" or "host".
       # Default port for MySQL and MariaDB is 3306.

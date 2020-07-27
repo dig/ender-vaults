@@ -95,13 +95,18 @@ public class YamlStorage implements DataStorage {
         configuration.save(file);
     }
 
+    private String getDirectoryName() {
+        FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
+        return configuration.getString("storage.settings.flatfile.directory", "data");
+    }
+
     private File getOwnerFolder(UUID ownerUUID) {
-        String filePath = "data" + File.separator + ownerUUID.toString();
+        String filePath = getDirectoryName() + File.separator + ownerUUID.toString();
         return new File(plugin.getDataFolder(), filePath);
     }
 
     private File getVaultFile(UUID ownerUUID, UUID id) {
-        String filePath = "data" + File.separator + ownerUUID.toString() + File.separator + id.toString() + ".yml";
+        String filePath = getDirectoryName() + File.separator + ownerUUID.toString() + File.separator + id.toString() + ".yml";
         return new File(plugin.getDataFolder(), filePath);
     }
 }
