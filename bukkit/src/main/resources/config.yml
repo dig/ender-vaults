@@ -15,3 +15,18 @@ vault:
   # double chest is 6
   # single chest is 3
   default-rows: 3
+
+# Data storage
+storage:
+  # FLATFILE
+  type: FLATFILE
+  #
+  # Each type above has different settings below, please
+  # check you have filled all the required fields.
+  #
+  # FLATFILE
+  # settings:
+  #   type: YAML
+  #
+  settings:
+    type: YAML

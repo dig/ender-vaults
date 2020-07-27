@@ -6,6 +6,7 @@ import com.github.dig.endervaults.api.exception.PluginAlreadySetException;
 import com.github.dig.endervaults.api.file.DataFile;
 import com.github.dig.endervaults.api.lang.Language;
 import com.github.dig.endervaults.api.storage.DataStorage;
+import com.github.dig.endervaults.api.storage.Storage;
 import com.github.dig.endervaults.api.vault.VaultPersister;
 import com.github.dig.endervaults.api.vault.metadata.VaultMetadataRegistry;
 import com.github.dig.endervaults.bukkit.storage.YamlStorage;
@@ -23,6 +24,7 @@ import com.github.dig.endervaults.nms.NMSProvider;
 import com.github.dig.endervaults.nms.v1_16_R1.v1_16_R1NMS;
 import lombok.extern.java.Log;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -87,6 +89,15 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
     public void onEnable() {
         if (!setProviders()) return;
         loadConfiguration();
+
+        try {
+            setupDataStorage();
+        } catch (IllegalArgumentException e) {
+            log.log(Level.SEVERE, "[EnderVaults] Unable to set data storage, disabling...", e);
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
         setupManagers();
         registerCommands();
         registerMetadataConverters();
@@ -126,11 +137,21 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
         configFile = new BukkitDataFile(new File(getDataFolder(), "config.yml"));
     }
 
+    private void setupDataStorage() throws IllegalArgumentException {
+        Configuration configuration = (Configuration) configFile.getConfiguration();
+        Storage storage = Storage.valueOf(configuration.getString("storage.type"));
+
+        switch (storage) {
+            case FLATFILE:
+                dataStorage = new YamlStorage();
+                break;
+        }
+    }
+
     private void setupManagers() {
         registry = new BukkitVaultRegistry();
         language = new BukkitLanguage();
         metadataRegistry = new BukkitVaultMetadataRegistry();
-        dataStorage = new YamlStorage();
         persister = new BukkitVaultPersister();
     }
 
