@@ -15,6 +15,11 @@ vault:
   # double chest is 6
   # single chest is 3
   default-rows: 3
+  # Items that players cannot put inside
+  # their vaults.
+  # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+  blacklist:
+    - BARRIER
 
 # Auto save timer
 auto-save:

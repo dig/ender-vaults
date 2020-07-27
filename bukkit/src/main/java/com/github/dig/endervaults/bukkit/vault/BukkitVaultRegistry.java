@@ -4,6 +4,8 @@ import com.github.dig.endervaults.api.vault.Vault;
 import com.github.dig.endervaults.api.vault.VaultRegistry;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitTask;
 import org.javatuples.Pair;
 
 import java.util.*;
@@ -49,5 +51,18 @@ public class BukkitVaultRegistry implements VaultRegistry {
     @Override
     public synchronized void clean(UUID ownerUUID) {
         vaults.row(ownerUUID).clear();
+    }
+
+    public boolean isVault(Inventory inventory) {
+        for (UUID ownerUUID : getAllOwners()) {
+            for (Vault vault : get(ownerUUID).values()) {
+                BukkitVault bukkitVault = (BukkitVault) vault;
+                if (bukkitVault.compare(inventory)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

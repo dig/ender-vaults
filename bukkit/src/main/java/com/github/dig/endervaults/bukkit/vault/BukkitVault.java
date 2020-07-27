@@ -6,6 +6,7 @@ import com.github.dig.endervaults.nms.NMSProvider;
 import com.github.dig.endervaults.nms.VaultNMS;
 import com.github.dig.endervaults.api.util.VaultSerializable;
 import com.github.dig.endervaults.api.vault.Vault;
+import lombok.Getter;
 import lombok.extern.java.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -103,6 +104,10 @@ public class BukkitVault implements Vault, VaultSerializable {
 
     public void launchFor(Player player) {
         player.openInventory(inventory);
+    }
+
+    public boolean compare(Inventory inventory) {
+        return this.inventory == inventory;
     }
 
     private ItemStack toBukkitItem(Object itemStack) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {

@@ -9,7 +9,8 @@ public enum Lang {
     INVALID_VAULT_ORDER("invalid-vault-order"),
     PLAYER_NOT_LOADED("player-not-loaded"),
     NO_PERMISSION("no-permission"),
-    CONFIG_RELOAD("config-reload");
+    CONFIG_RELOAD("config-reload"),
+    BLACKLISTED_ITEM("blacklisted-item");
 
     @Getter
     private String key;

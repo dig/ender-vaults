@@ -2,6 +2,7 @@ name: EnderVaults
 version: 1.0.0
 main: com.github.dig.endervaults.bukkit.EVBukkitPlugin
 author: Digital
+api-version: 1.13
 commands:
   vault:
     description: Manage vaults
