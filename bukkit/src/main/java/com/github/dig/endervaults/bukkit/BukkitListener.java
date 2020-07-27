@@ -47,7 +47,7 @@ public class BukkitListener implements Listener {
         ItemStack item = event.getCurrentItem();
         Inventory inventory = event.getInventory();
 
-        if (inventory != null && item != null) {
+        if (inventory != null && item != null && isBlacklistEnabled()) {
             if (registry.isVault(inventory) && getBlacklisted().contains(item.getType())) {
                 player.sendMessage(plugin.getLanguage().get(Lang.BLACKLISTED_ITEM));
                 event.setCancelled(true);
@@ -61,7 +61,7 @@ public class BukkitListener implements Listener {
         ItemStack item = event.getItem();
         Inventory inventory = event.getDestination();
 
-        if (inventory != null && item != null) {
+        if (inventory != null && item != null && isBlacklistEnabled()) {
             if (registry.isVault(inventory) && getBlacklisted().contains(item.getType())) {
                 event.setCancelled(true);
             }
@@ -76,7 +76,7 @@ public class BukkitListener implements Listener {
         ItemStack item = event.getCursor();
         Inventory inventory = event.getInventory();
 
-        if (inventory != null && item != null) {
+        if (inventory != null && item != null && isBlacklistEnabled()) {
             if (registry.isVault(inventory) && getBlacklisted().contains(item.getType())) {
                 player.sendMessage(plugin.getLanguage().get(Lang.BLACKLISTED_ITEM));
                 event.setCancelled(true);
@@ -84,9 +84,14 @@ public class BukkitListener implements Listener {
         }
     }
 
+    private boolean isBlacklistEnabled() {
+        FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
+        return configuration.getBoolean("vault.blacklist.enabled", false);
+    }
+
     private Set<Material> getBlacklisted() {
         FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
-        return configuration.getStringList("vault.blacklist")
+        return configuration.getStringList("vault.blacklist.items")
                 .stream()
                 .map(Material::valueOf)
                 .collect(Collectors.toSet());
