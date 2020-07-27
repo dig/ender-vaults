@@ -2,7 +2,6 @@ package com.github.dig.endervaults.bukkit.vault;
 
 import com.github.dig.endervaults.api.PluginProvider;
 import com.github.dig.endervaults.api.storage.DataStorage;
-import com.github.dig.endervaults.api.util.AsyncHelper;
 import com.github.dig.endervaults.api.vault.VaultPersister;
 import com.github.dig.endervaults.api.vault.VaultRegistry;
 import lombok.extern.java.Log;
