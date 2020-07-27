@@ -93,6 +93,11 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
         registerListeners();
     }
 
+    @Override
+    public void onDisable() {
+        persister.save();
+    }
+
     private boolean setProviders() {
         try {
             PluginProvider.set(this);

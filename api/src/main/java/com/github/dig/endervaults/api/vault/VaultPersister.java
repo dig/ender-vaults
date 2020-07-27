@@ -8,4 +8,6 @@ public interface VaultPersister {
 
     void save(UUID ownerUUID);
 
+    void save();
+
 }

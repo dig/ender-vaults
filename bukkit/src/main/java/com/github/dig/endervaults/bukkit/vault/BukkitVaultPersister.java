@@ -5,6 +5,7 @@ import com.github.dig.endervaults.api.storage.DataStorage;
 import com.github.dig.endervaults.api.vault.VaultPersister;
 import com.github.dig.endervaults.api.vault.VaultRegistry;
 import lombok.extern.java.Log;
+import org.bukkit.Bukkit;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -33,5 +34,13 @@ public class BukkitVaultPersister implements VaultPersister {
             }
         });
         registry.clean(ownerUUID);
+    }
+
+    @Override
+    public void save() {
+        Bukkit.getOnlinePlayers()
+                .stream()
+                .map(player -> player.getUniqueId())
+                .forEach(this::save);
     }
 }
