@@ -18,15 +18,35 @@ vault:
 
 # Data storage
 storage:
-  # FLATFILE
-  type: FLATFILE
-  #
-  # Each type above has different settings below, please
-  # check you have filled all the required fields.
-  #
-  # FLATFILE
-  # settings:
-  #   type: YAML
-  #
+  # Possible methods:
+  #   - FLATFILE
+  #   - MYSQL
+  #   - MARIADB (preferred over MYSQL)
+  method: FLATFILE
+
+  # All the different settings for the storage methods.
   settings:
-    type: YAML
+    flatfile:
+      # Possible file formats:
+      #   - YAML
+      type: YAML
+    mysql:
+      # Address and port. Can specify as "host:port" or "host".
+      # Default port for MySQL and MariaDB is 3306.
+      address: 'localhost'
+
+      # Database to create tables in
+      database: 'minecraft'
+
+      # Credentials
+      user: 'minecraft'
+      password: '123'
+
+      # Connection properties, disable useSSL and verifyServerCertificate to
+      # disable SSL connections.
+      properties:
+        cachePrepStmts: 'true'
+        prepStmtCacheSize: '250'
+        prepStmtCacheSqlLimit: '2048'
+        useSSL: 'true'
+        verifyServerCertificate: 'true'

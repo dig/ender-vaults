@@ -10,6 +10,7 @@ import com.github.dig.endervaults.api.storage.Storage;
 import com.github.dig.endervaults.api.vault.VaultPersister;
 import com.github.dig.endervaults.api.vault.metadata.VaultMetadataRegistry;
 import com.github.dig.endervaults.bukkit.storage.YamlStorage;
+import com.github.dig.endervaults.bukkit.storage.HikariMySQLStorage;
 import com.github.dig.endervaults.bukkit.vault.BukkitVaultPersister;
 import com.github.dig.endervaults.bukkit.vault.metadata.BukkitVaultMetadataRegistry;
 import com.github.dig.endervaults.bukkit.vault.metadata.IntegerMetadataConverter;
@@ -140,16 +141,19 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
 
     private void setupDataStorage() throws IllegalArgumentException {
         Configuration configuration = (Configuration) configFile.getConfiguration();
-        Storage storage = Storage.valueOf(configuration.getString("storage.type"));
+        Storage storage = Storage.valueOf(configuration.getString("storage.method"));
 
         switch (storage) {
             case FLATFILE:
                 dataStorage = new YamlStorage();
                 break;
+            case MYSQL:
+                dataStorage = new HikariMySQLStorage();
+                break;
         }
 
-        dataStorage.init();
         log.log(Level.INFO, "[EnderVaults] Using data storage: " + storage.toString() + ".");
+        dataStorage.init();
     }
 
     private void setupManagers() {

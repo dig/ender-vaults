@@ -10,8 +10,9 @@ dependencies {
     compile project(':api')
     compileOnly 'org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT'
     compileOnly 'org.bukkit:craftbukkit:1.16.1-R0.1-SNAPSHOT'
+    compile 'com.zaxxer:HikariCP:3.4.5'
 }
 
 shadowJar {
-    archiveName = "endervaults-bukkit-v${project.ext.version}.jar"
+    archiveName = "EnderVaults-Bukkit-v${project.ext.version}.jar"
 }
