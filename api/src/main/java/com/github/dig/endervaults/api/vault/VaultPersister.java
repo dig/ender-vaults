@@ -4,10 +4,8 @@ import java.util.UUID;
 
 public interface VaultPersister {
 
-    boolean exists(UUID ownerUUID, UUID id);
+    void load(UUID ownerUUID);
 
-    Vault load(UUID ownerUUID, UUID id);
-
-    void save(Vault vault);
+    void save(UUID ownerUUID);
 
 }

@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class BukkitVaultRegistry implements VaultRegistry {
 
-    private Table<UUID, UUID, Vault> vaults;
+    private final Table<UUID, UUID, Vault> vaults;
     public BukkitVaultRegistry() {
         this.vaults = HashBasedTable.create();
     }
