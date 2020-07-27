@@ -6,10 +6,7 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import org.javatuples.Pair;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class BukkitVaultRegistry implements VaultRegistry {
 
@@ -37,6 +34,11 @@ public class BukkitVaultRegistry implements VaultRegistry {
                 .filter(vaultObjectPair -> vaultObjectPair.getValue1().equals(value))
                 .map(vaultObjectPair -> vaultObjectPair.getValue0())
                 .findFirst();
+    }
+
+    @Override
+    public Set<UUID> getAllOwners() {
+        return vaults.rowKeySet();
     }
 
     @Override

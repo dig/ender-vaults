@@ -44,10 +44,7 @@ public class BukkitVaultPersister implements VaultPersister {
 
     @Override
     public void save() {
-        Bukkit.getOnlinePlayers()
-                .stream()
-                .map(player -> player.getUniqueId())
-                .forEach(this::save);
+        registry.getAllOwners().forEach(this::save);
     }
 
     @Override

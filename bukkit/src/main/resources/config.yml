@@ -16,6 +16,10 @@ vault:
   # single chest is 3
   default-rows: 3
 
+# Auto save timer
+auto-save:
+  minutes: 15
+
 # Data storage
 storage:
   # Possible methods:

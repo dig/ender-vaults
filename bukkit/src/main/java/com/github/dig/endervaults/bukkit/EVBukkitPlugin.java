@@ -11,6 +11,7 @@ import com.github.dig.endervaults.api.vault.VaultPersister;
 import com.github.dig.endervaults.api.vault.metadata.VaultMetadataRegistry;
 import com.github.dig.endervaults.bukkit.storage.YamlStorage;
 import com.github.dig.endervaults.bukkit.storage.HikariMySQLStorage;
+import com.github.dig.endervaults.bukkit.vault.BukkitVaultAutoSave;
 import com.github.dig.endervaults.bukkit.vault.BukkitVaultPersister;
 import com.github.dig.endervaults.bukkit.vault.metadata.BukkitVaultMetadataRegistry;
 import com.github.dig.endervaults.bukkit.vault.metadata.IntegerMetadataConverter;
@@ -26,7 +27,9 @@ import com.github.dig.endervaults.nms.v1_16_R1.v1_16_R1NMS;
 import lombok.extern.java.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -42,6 +45,8 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
     private VaultMetadataRegistry metadataRegistry;
     private DataStorage dataStorage;
     private VaultPersister persister;
+
+    private BukkitTask autoSaveTask;
 
     @Override
     public MinecraftVersion getVersion() {
@@ -100,6 +105,8 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
         }
 
         setupManagers();
+        setupTasks();
+
         registerCommands();
         registerMetadataConverters();
         registerListeners();
@@ -107,6 +114,7 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
 
     @Override
     public void onDisable() {
+        autoSaveTask.cancel();
         persister.save();
         dataStorage.close();
     }
@@ -161,6 +169,13 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
         language = new BukkitLanguage();
         metadataRegistry = new BukkitVaultMetadataRegistry();
         persister = new BukkitVaultPersister();
+    }
+
+    private void setupTasks() {
+        FileConfiguration configuration = (FileConfiguration) configFile.getConfiguration();
+
+        int autoSaveMins = configuration.getInt("auto-save.minutes", 15);
+        autoSaveTask = Bukkit.getScheduler().runTaskTimerAsynchronously(this, new BukkitVaultAutoSave(), autoSaveMins * 60 * 20, autoSaveMins * 60 * 20);
     }
 
     private void registerCommands() {
