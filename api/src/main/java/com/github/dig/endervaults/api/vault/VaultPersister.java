@@ -10,4 +10,6 @@ public interface VaultPersister {
 
     void save();
 
+    boolean isLoaded(UUID ownerUUID);
+
 }

@@ -14,6 +14,12 @@ public class BukkitLanguage implements Language {
     private final DataFile langFile = PluginProvider.getPlugin().getLangFile();
 
     @Override
+    public String get(Lang lang) {
+        FileConfiguration configuration = (FileConfiguration) langFile.getConfiguration();
+        return ChatColor.translateAlternateColorCodes('&', configuration.getString(lang.getKey()));
+    }
+
+    @Override
     public String get(Lang lang, Map<String, Object> placeholders) {
         FileConfiguration configuration = (FileConfiguration) langFile.getConfiguration();
         String text = configuration.getString(lang.getKey());

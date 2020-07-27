@@ -1,2 +1,4 @@
 vault-selector-title: '&8Vault Selector'
 vault-title: '&8Vault #%order'
+invalid-vault-order: '&cYou need to specify a valid number.'
+player-not-loaded: '&cVault data has not been loaded yet, please wait...'

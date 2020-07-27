@@ -8,6 +8,8 @@ import lombok.extern.java.Log;
 import org.bukkit.Bukkit;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -16,11 +18,13 @@ public class BukkitVaultPersister implements VaultPersister {
 
     private final DataStorage dataStorage = PluginProvider.getPlugin().getDataStorage();
     private final VaultRegistry registry = PluginProvider.getPlugin().getRegistry();
+    private final List<UUID> persisted = new ArrayList<>();
 
     @Override
     public void load(UUID ownerUUID) {
         registry.clean(ownerUUID);
         dataStorage.load(ownerUUID).forEach(vault -> registry.register(ownerUUID, vault));
+        persisted.add(ownerUUID);
     }
 
     @Override
@@ -33,6 +37,8 @@ public class BukkitVaultPersister implements VaultPersister {
                         "[EnderVaults] Unable to save vault " + vault.getId() + " for player " + ownerUUID + ".", e);
             }
         });
+
+        persisted.remove(ownerUUID);
         registry.clean(ownerUUID);
     }
 
@@ -42,5 +48,10 @@ public class BukkitVaultPersister implements VaultPersister {
                 .stream()
                 .map(player -> player.getUniqueId())
                 .forEach(this::save);
+    }
+
+    @Override
+    public boolean isLoaded(UUID ownerUUID) {
+        return persisted.contains(ownerUUID);
     }
 }

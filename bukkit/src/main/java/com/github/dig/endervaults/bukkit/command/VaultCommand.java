@@ -2,6 +2,7 @@ package com.github.dig.endervaults.bukkit.command;
 
 import com.github.dig.endervaults.api.EnderVaultsPlugin;
 import com.github.dig.endervaults.api.PluginProvider;
+import com.github.dig.endervaults.api.lang.Lang;
 import com.github.dig.endervaults.api.vault.Vault;
 import com.github.dig.endervaults.api.vault.VaultRegistry;
 import com.github.dig.endervaults.api.vault.metadata.VaultDefaultMetadata;
@@ -24,9 +25,26 @@ public class VaultCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
+            if (!plugin.getPersister().isLoaded(player.getUniqueId())) {
+                sender.sendMessage(plugin.getLanguage().get(Lang.PLAYER_NOT_LOADED));
+                return true;
+            }
+
             if (args.length == 1) {
                 VaultRegistry registry = plugin.getRegistry();
-                int orderValue = Integer.parseInt(args[0]);
+
+                int orderValue;
+                try {
+                    orderValue = Integer.parseInt(args[0]);
+                } catch (NumberFormatException e) {
+                    sender.sendMessage(plugin.getLanguage().get(Lang.INVALID_VAULT_ORDER));
+                    return true;
+                }
+
+                if (orderValue <= 0) {
+                    sender.sendMessage(plugin.getLanguage().get(Lang.INVALID_VAULT_ORDER));
+                    return true;
+                }
 
                 Optional<Vault> vaultOptional = registry
                         .getByMetadata(player.getUniqueId(), VaultDefaultMetadata.ORDER.getKey(), orderValue);
