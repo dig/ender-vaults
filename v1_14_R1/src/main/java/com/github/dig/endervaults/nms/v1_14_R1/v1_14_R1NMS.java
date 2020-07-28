@@ -59,7 +59,8 @@ public class v1_14_R1NMS implements VaultNMS {
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
 
         Object nbtTagList = nbtTagListClass.newInstance();
-        Method nbtTagListAddMethod = nbtTagListClass.getMethod("add", nbtBaseClass);
+        Method nbtTagListSizeMethod = nbtTagListClass.getMethod("size");
+        Method nbtTagListAddMethod = nbtTagListClass.getMethod("add", int.class, nbtBaseClass);
         Method itemStackSaveMethod = nbtItemStackClass.getMethod("save", nbtTagCompoundClass);
 
         for (int i = 0; i < craftItemStacks.length; ++i) {
@@ -68,7 +69,9 @@ public class v1_14_R1NMS implements VaultNMS {
             if (itemStack != null) {
                 itemStackSaveMethod.invoke(itemStack, nbtTagCompound);
             }
-            nbtTagListAddMethod.invoke(nbtTagList, nbtTagCompound);
+
+            int size = (int) nbtTagListSizeMethod.invoke(nbtTagList);
+            nbtTagListAddMethod.invoke(nbtTagList, size, nbtTagCompound);
         }
 
         writeNbt.invoke(null, nbtTagList, dataOutputStream);
