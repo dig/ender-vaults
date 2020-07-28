@@ -7,10 +7,12 @@ import com.github.dig.endervaults.api.vault.metadata.VaultDefaultMetadata;
 import com.github.dig.endervaults.bukkit.vault.BukkitVault;
 import com.github.dig.endervaults.bukkit.vault.BukkitVaultFactory;
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,15 +27,15 @@ public class SelectorListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-
         Inventory inventory = event.getClickedInventory();
         ItemStack item = event.getCurrentItem();
 
-        if (inventory != null && item != null) {
+        if (inventory != null && item != null && item.getType() != Material.AIR) {
             NBTItem nbtItem = new NBTItem(item);
             if (nbtItem.hasKey("vaultid")) {
                 UUID vaultID = UUID.fromString(nbtItem.getString("vaultid"));
                 registry.get(player.getUniqueId(), vaultID).ifPresent(vault -> ((BukkitVault) vault).launchFor(player));
+                event.setCancelled(true);
             } else if (nbtItem.hasKey("vaultorder")) {
                 int orderValue = nbtItem.getInteger("vaultorder");
                 Optional<Vault> vaultOptional = registry
@@ -50,6 +52,18 @@ public class SelectorListener implements Listener {
                 }
 
                 vault.launchFor(player);
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onMove(InventoryMoveItemEvent event) {
+        ItemStack item = event.getItem();
+        if (item != null && item.getType() != Material.AIR) {
+            NBTItem nbtItem = new NBTItem(item);
+            if (nbtItem.hasKey("vaultid") || nbtItem.hasKey("vaultorder") || nbtItem.hasKey("vaultlocked")) {
+                event.setCancelled(true);
             }
         }
     }

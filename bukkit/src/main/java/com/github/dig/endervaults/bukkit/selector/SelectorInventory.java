@@ -120,7 +120,7 @@ public class SelectorInventory {
         item.setItemMeta(meta);
 
         NBTItem nbtItem = new NBTItem(item);
-        nbtItem.setBoolean("locked", true);
+        nbtItem.setBoolean("vaultlocked", true);
         return nbtItem.getItem();
     }
 
