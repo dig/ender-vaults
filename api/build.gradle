@@ -1,4 +1,5 @@
 dependencies {
     compile project(':nms')
     compile project(':v1_8_R3')
+    compile project(':v1_14_R1')
 }
