@@ -1,4 +1,4 @@
-package com.github.dig.endervaults.nms.v1_16_R1;
+package com.github.dig.endervaults.nms.v1_8_R3;
 
 import com.github.dig.endervaults.nms.VaultNMS;
 import lombok.extern.java.Log;
@@ -11,7 +11,7 @@ import java.util.Base64;
 import java.util.logging.Level;
 
 @Log
-public class v1_16_R1NMS implements VaultNMS {
+public class v1_8_R3NMS implements VaultNMS {
 
     private static Method writeNbt;
     private static Method readNbt;
