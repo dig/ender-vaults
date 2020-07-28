@@ -6,6 +6,7 @@ import lombok.extern.java.Log;
 
 import java.io.*;
 import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Base64;
@@ -90,18 +91,14 @@ public class v1_8_R3NMS implements VaultNMS {
         Method nbtTagCompoundIsEmptyMethod = nbtTagCompoundClass.getMethod("isEmpty");
         Object items = Array.newInstance(nbtItemStackClass, nbtTagListSize);
 
-        Method itemStackCreateMethod;
-        try {
-            itemStackCreateMethod = nbtItemStackClass.getMethod("a", nbtTagCompoundClass);
-        } catch (NoSuchMethodException e) {
-            itemStackCreateMethod = nbtItemStackClass.getMethod("createStack", nbtTagCompoundClass);
-        }
+        Constructor<?> nbtItemStackConstructor = nbtItemStackClass.getDeclaredConstructor(nbtTagCompoundClass);
+        nbtItemStackConstructor.setAccessible(true);
 
         for (int i = 0; i < nbtTagListSize; ++i) {
             Object nbtTagCompound = nbtTagListGetMethod.invoke(nbtTagList, i);
             boolean isEmpty = (boolean) nbtTagCompoundIsEmptyMethod.invoke(nbtTagCompound);
             if (!isEmpty) {
-                Array.set(items, i, itemStackCreateMethod.invoke(null, nbtTagCompound));
+                Array.set(items, i, nbtItemStackConstructor.newInstance(nbtTagCompound));
             }
         }
 
