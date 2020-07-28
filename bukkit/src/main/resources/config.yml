@@ -52,13 +52,12 @@ selector:
       - DIAMOND_SWORD
       - DIAMOND_AXE
       - DIAMOND_PICKAXE
-      - DIAMOND_SHOVEL
       - DIAMOND_HOE
       - DIAMOND_HELMET
       - DIAMOND_CHESTPLATE
       - DIAMOND_LEGGINGS
       - DIAMOND_BOOTS
-      - ENCHANTED_GOLDEN_APPLE
+      - GOLDEN_APPLE
       - BOW
       - ARROW
       - APPLE
