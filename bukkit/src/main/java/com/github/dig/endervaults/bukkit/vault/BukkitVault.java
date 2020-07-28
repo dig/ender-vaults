@@ -9,6 +9,7 @@ import com.github.dig.endervaults.api.vault.Vault;
 import lombok.Getter;
 import lombok.extern.java.Log;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -56,6 +57,18 @@ public class BukkitVault implements Vault, VaultSerializable {
     @Override
     public int getSize() {
         return inventory.getSize();
+    }
+
+    @Override
+    public int getFreeSize() {
+        int free = 0;
+        for (int i = 0; i < inventory.getSize(); i++) {
+            ItemStack item = inventory.getItem(i);
+            if (item == null || item.getType() == Material.AIR) {
+                free++;
+            }
+        }
+        return free;
     }
 
     @Override

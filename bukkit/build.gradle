@@ -4,6 +4,7 @@ plugins {
 
 repositories {
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url = 'https://repo.codemc.org/repository/maven-public/' }
 }
 
 dependencies {
@@ -11,8 +12,10 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT'
     compileOnly 'org.bukkit:craftbukkit:1.16.1-R0.1-SNAPSHOT'
     compile 'com.zaxxer:HikariCP:3.4.5'
+    compile 'de.tr7zw:item-nbt-api:2.4.1'
 }
 
 shadowJar {
     archiveName = "EnderVaults-Bukkit-v${project.ext.version}.jar"
+    relocate 'de.tr7zw.changeme.nbtapi', 'com.github.dig.endervaults.bukkit.nbt'
 }

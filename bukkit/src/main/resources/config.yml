@@ -4,10 +4,28 @@ selector:
   # double chest is 6
   # single chest is 3
   rows: 6
-  # Should pages be enabled?
-  # If disabled, players won't be able to access
-  # all their vaults from the selector.
-  pages: true
+  # Should vaults that the player has no
+  # permission be shown?
+  show-locked: true
+  # Item designs, how the items look etc.
+  template:
+    # Unlocked vault item
+    unlocked:
+      title: '&5Vault #%order'
+      # Available placeholders:
+      #    - %filled_slots (slots that are filled by items)
+      #    - %total_slots (size of the inventory)
+      #    - %free_slots (slots that are not filled by items)
+      lore:
+        - '&7%filled_slots/%total_slots slots filled.'
+        - '&f '
+        - '&7Click me to open!'
+    # Locked vault item
+    locked:
+      title: '&5Vault &c(Locked)'
+      lore:
+        - '&7Unlock by donating at'
+        - '&7store.example.com'
 
 # Configuration for each vault
 vault:

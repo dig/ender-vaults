@@ -11,6 +11,8 @@ public interface Vault {
 
     int getSize();
 
+    int getFreeSize();
+
     Map<String, Object> getMetadata();
 
 }

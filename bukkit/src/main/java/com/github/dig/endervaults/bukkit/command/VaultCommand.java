@@ -6,6 +6,7 @@ import com.github.dig.endervaults.api.lang.Lang;
 import com.github.dig.endervaults.api.vault.Vault;
 import com.github.dig.endervaults.api.vault.VaultRegistry;
 import com.github.dig.endervaults.api.vault.metadata.VaultDefaultMetadata;
+import com.github.dig.endervaults.bukkit.selector.SelectorInventory;
 import com.github.dig.endervaults.bukkit.vault.BukkitVault;
 import com.github.dig.endervaults.bukkit.vault.BukkitVaultFactory;
 import org.bukkit.command.Command;
@@ -61,7 +62,7 @@ public class VaultCommand implements CommandExecutor {
 
                 vault.launchFor(player);
             } else {
-                // TODO: open selector
+                new SelectorInventory(player.getUniqueId(), 1).launchFor(player);
             }
         }
         return true;
