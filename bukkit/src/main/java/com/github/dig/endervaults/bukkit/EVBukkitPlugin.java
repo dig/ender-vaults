@@ -32,6 +32,7 @@ import com.github.dig.endervaults.bukkit.lang.BukkitLanguage;
 import com.github.dig.endervaults.bukkit.vault.BukkitVaultRegistry;
 import com.github.dig.endervaults.nms.NMSProvider;
 import com.github.dig.endervaults.nms.VaultNMS;
+import com.github.dig.endervaults.nms.v1_11_R1.v1_11_R1NMS;
 import com.github.dig.endervaults.nms.v1_14_R1.v1_14_R1NMS;
 import com.github.dig.endervaults.nms.v1_8_R3.v1_8_R3NMS;
 import lombok.extern.java.Log;
@@ -156,11 +157,13 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
             case v1_9_R1:
             case v1_9_R2:
             case v1_10_R1:
+                bridge = new v1_8_R3NMS();
+                break;
             case v1_11_R1:
             case v1_12_R1:
             case v1_13_R1:
             case v1_13_R2:
-                bridge = new v1_8_R3NMS();
+                bridge = new v1_11_R1NMS();
                 break;
             case v1_14_R1:
             case v1_15_R1:

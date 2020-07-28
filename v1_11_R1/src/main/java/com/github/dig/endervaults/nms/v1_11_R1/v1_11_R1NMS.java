@@ -1,4 +1,4 @@
-package com.github.dig.endervaults.nms.v1_8_R3;
+package com.github.dig.endervaults.nms.v1_11_R1;
 
 import com.github.dig.endervaults.nms.MinecraftVersion;
 import com.github.dig.endervaults.nms.VaultNMS;
@@ -13,7 +13,7 @@ import java.util.Base64;
 import java.util.logging.Level;
 
 @Log
-public class v1_8_R3NMS implements VaultNMS {
+public class v1_11_R1NMS implements VaultNMS {
 
     private Class<?> nbtTagListClass;
     private Class<?> nbtItemStackClass;
@@ -89,17 +89,20 @@ public class v1_8_R3NMS implements VaultNMS {
         int nbtTagListSize = (int) nbtTagListSizeMethod.invoke(nbtTagList);
 
         Method nbtTagCompoundIsEmptyMethod = nbtTagCompoundClass.getMethod("isEmpty");
-        Method nbtItemStackCreateMethod = nbtItemStackClass.getMethod("createStack", nbtTagCompoundClass);
         Object items = Array.newInstance(nbtItemStackClass, nbtTagListSize);
+
+        Constructor<?> nbtItemStackConstructor = nbtItemStackClass.getDeclaredConstructor(nbtTagCompoundClass);
+        nbtItemStackConstructor.setAccessible(true);
 
         for (int i = 0; i < nbtTagListSize; ++i) {
             Object nbtTagCompound = nbtTagListGetMethod.invoke(nbtTagList, i);
             boolean isEmpty = (boolean) nbtTagCompoundIsEmptyMethod.invoke(nbtTagCompound);
             if (!isEmpty) {
-                Array.set(items, i, nbtItemStackCreateMethod.invoke(null, nbtTagCompound));
+                Array.set(items, i, nbtItemStackConstructor.newInstance(nbtTagCompound));
             }
         }
 
         return (Object[]) items;
     }
 }
+
