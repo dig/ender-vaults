@@ -32,27 +32,31 @@ public class SelectorListener implements Listener {
 
         if (inventory != null && item != null && item.getType() != Material.AIR) {
             NBTItem nbtItem = new NBTItem(item);
-            if (nbtItem.hasKey("vaultid")) {
-                UUID vaultID = UUID.fromString(nbtItem.getString("vaultid"));
-                registry.get(player.getUniqueId(), vaultID).ifPresent(vault -> ((BukkitVault) vault).launchFor(player));
-                event.setCancelled(true);
-            } else if (nbtItem.hasKey("vaultorder")) {
-                int orderValue = nbtItem.getInteger("vaultorder");
-                Optional<Vault> vaultOptional = registry
-                        .getByMetadata(player.getUniqueId(), VaultDefaultMetadata.ORDER.getKey(), orderValue);
+            if (nbtItem.hasKey(SelectorConstants.NBT_VAULT_ITEM)) {
+                if (nbtItem.hasKey(SelectorConstants.NBT_VAULT_ID) && nbtItem.hasKey(SelectorConstants.NBT_VAULT_OWNER_UUID)) {
+                    UUID vaultID = UUID.fromString(nbtItem.getString(SelectorConstants.NBT_VAULT_ID));
+                    UUID vaultOwnerUUID = UUID.fromString(nbtItem.getString(SelectorConstants.NBT_VAULT_OWNER_UUID));
 
-                BukkitVault vault;
-                if (vaultOptional.isPresent()) {
-                    vault = (BukkitVault) vaultOptional.get();
-                } else {
-                    vault = (BukkitVault) BukkitVaultFactory.create(player.getUniqueId(), new HashMap<String, Object>(){{
-                        put(VaultDefaultMetadata.ORDER.getKey(), orderValue);
-                    }});
-                    registry.register(player.getUniqueId(), vault);
+                    registry.get(vaultOwnerUUID, vaultID).ifPresent(vault -> ((BukkitVault) vault).launchFor(player));
+                    event.setCancelled(true);
+                } else if (nbtItem.hasKey(SelectorConstants.NBT_VAULT_ORDER)) {
+                    int orderValue = nbtItem.getInteger(SelectorConstants.NBT_VAULT_ORDER);
+                    Optional<Vault> vaultOptional = registry
+                            .getByMetadata(player.getUniqueId(), VaultDefaultMetadata.ORDER.getKey(), orderValue);
+
+                    BukkitVault vault;
+                    if (vaultOptional.isPresent()) {
+                        vault = (BukkitVault) vaultOptional.get();
+                    } else {
+                        vault = (BukkitVault) BukkitVaultFactory.create(player.getUniqueId(), new HashMap<String, Object>(){{
+                            put(VaultDefaultMetadata.ORDER.getKey(), orderValue);
+                        }});
+                        registry.register(player.getUniqueId(), vault);
+                    }
+
+                    vault.launchFor(player);
+                    event.setCancelled(true);
                 }
-
-                vault.launchFor(player);
-                event.setCancelled(true);
             }
         }
     }
@@ -62,7 +66,7 @@ public class SelectorListener implements Listener {
         ItemStack item = event.getItem();
         if (item != null && item.getType() != Material.AIR) {
             NBTItem nbtItem = new NBTItem(item);
-            if (nbtItem.hasKey("vaultid") || nbtItem.hasKey("vaultorder") || nbtItem.hasKey("vaultlocked")) {
+            if (nbtItem.hasKey(SelectorConstants.NBT_VAULT_ITEM)) {
                 event.setCancelled(true);
             }
         }

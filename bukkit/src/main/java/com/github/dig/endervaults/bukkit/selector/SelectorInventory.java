@@ -85,10 +85,12 @@ public class SelectorInventory {
         item.setItemMeta(meta);
 
         NBTItem nbtItem = new NBTItem(item);
+        nbtItem.setBoolean(SelectorConstants.NBT_VAULT_ITEM, true);
         if (id != null) {
-            nbtItem.setString("vaultid", id.toString());
+            nbtItem.setString(SelectorConstants.NBT_VAULT_ID, id.toString());
         }
-        nbtItem.setInteger("vaultorder", order);
+        nbtItem.setString(SelectorConstants.NBT_VAULT_OWNER_UUID, ownerUUID.toString());
+        nbtItem.setInteger(SelectorConstants.NBT_VAULT_ORDER, order);
         return nbtItem.getItem();
     }
 
@@ -120,7 +122,7 @@ public class SelectorInventory {
         item.setItemMeta(meta);
 
         NBTItem nbtItem = new NBTItem(item);
-        nbtItem.setBoolean("vaultlocked", true);
+        nbtItem.setBoolean(SelectorConstants.NBT_VAULT_ITEM, true);
         return nbtItem.getItem();
     }
 
