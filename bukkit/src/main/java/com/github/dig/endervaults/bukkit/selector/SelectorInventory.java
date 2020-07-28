@@ -2,6 +2,7 @@ package com.github.dig.endervaults.bukkit.selector;
 
 import com.github.dig.endervaults.api.PluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;
+import com.github.dig.endervaults.api.permission.UserPermission;
 import com.github.dig.endervaults.api.selector.SelectorMode;
 import com.github.dig.endervaults.api.vault.Vault;
 import com.github.dig.endervaults.api.vault.VaultRegistry;
@@ -26,6 +27,7 @@ public class SelectorInventory {
 
     private final EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
     private final VaultRegistry registry = plugin.getRegistry();
+    private final UserPermission<Player> permission = plugin.getPermission();
 
     private final UUID ownerUUID;
     private final int page;
@@ -59,26 +61,32 @@ public class SelectorInventory {
 
     private void init() {
         FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
-        // ItemStack locked = createLockedItem();
+
+        ItemStack locked = createLockedItem();
+        Player target = Bukkit.getPlayer(ownerUUID);
+
         for (int i = 0; i < inventory.getSize(); i++) {
             int order = page > 1 ? ((page - 1) * inventory.getSize()) + i : ((page - 1) * inventory.getSize()) + (i + 1);
+            if (target != null && permission.canUseVault(target, order)) {
+                UUID id = null;
+                int size = configuration.getInt("vault.default-rows", 3) * 9;
+                int free = 0;
+                int filled = 0;
 
-            UUID id = null;
-            int size = configuration.getInt("vault.default-rows", 3) * 9;
-            int free = 0;
-            int filled = 0;
+                Optional<Vault> vaultOptional = registry.getByMetadata(ownerUUID, VaultDefaultMetadata.ORDER.getKey(), order);
+                if (vaultOptional.isPresent()) {
+                    Vault vault = vaultOptional.get();
 
-            Optional<Vault> vaultOptional = registry.getByMetadata(ownerUUID, VaultDefaultMetadata.ORDER.getKey(), order);
-            if (vaultOptional.isPresent()) {
-                Vault vault = vaultOptional.get();
+                    id = vault.getId();
+                    size = vault.getSize();
+                    free = vault.getFreeSize();
+                    filled = size - free;
+                }
 
-                id = vault.getId();
-                size = vault.getSize();
-                free = vault.getFreeSize();
-                filled = size - free;
+                inventory.setItem(i, createUnlockedItem(id, order, size, free, filled));
+            } else if (configuration.getBoolean("selector.show-locked", true)) {
+                inventory.setItem(i, locked);
             }
-
-            inventory.setItem(i, createUnlockedItem(id, order, size, free, filled));
         }
     }
 

@@ -22,7 +22,7 @@ public class VaultAdminCommand implements CommandExecutor {
 
     private final EnderVaultsPlugin plugin = PluginProvider.getPlugin();
     private final Language language = plugin.getLanguage();
-    private final UserPermission permission = plugin.getPermission();
+    private final UserPermission<Player> permission = plugin.getPermission();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

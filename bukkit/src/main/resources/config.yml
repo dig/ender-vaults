@@ -24,9 +24,6 @@ selector:
   static-item:
     unlocked: CHEST
     locked: REDSTONE_BLOCK
-  # Allow the player to select the item of
-  # each vault? (permission is endervaults.select.item)
-  allow-item-selection: true
   # Item designs, how the items look etc.
   template:
     # Unlocked vault item

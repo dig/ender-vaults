@@ -31,7 +31,7 @@ public class BukkitListener implements Listener {
 
     private final EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
     private final VaultPersister persister = plugin.getPersister();
-    private final UserPermission permission = plugin.getPermission();
+    private final UserPermission<Player> permission = plugin.getPermission();
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event) {

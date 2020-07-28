@@ -8,16 +8,18 @@ import com.github.dig.endervaults.bukkit.EVBukkitPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 
 public class VaultReloadCommand implements CommandExecutor {
 
     private final EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
     private final Language language = plugin.getLanguage();
-    private final UserPermission permission = plugin.getPermission();
+    private final UserPermission<Player> permission = plugin.getPermission();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (permission.canReload(sender)) {
+        if (sender instanceof ConsoleCommandSender || permission.canReload((Player) sender)) {
             plugin.getConfigFile().load();
             plugin.getLangFile().load();
             sender.sendMessage(language.get(Lang.CONFIG_RELOAD));
