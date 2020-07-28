@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -76,6 +77,7 @@ public class BukkitVault implements Vault, VaultSerializable {
     }
 
     @Override
+    @Nullable
     public String encode() {
         ItemStack[] inventoryContents = inventory.getContents();
 
@@ -96,12 +98,24 @@ public class BukkitVault implements Vault, VaultSerializable {
             }
         }
 
-        return nmsBridge.encode((Object[]) nmsItemArray);
+        try {
+            return nmsBridge.encode((Object[]) nmsItemArray);
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+            log.log(Level.SEVERE, "[EnderVaults] Unable to encode bukkit vault.", e);
+            return null;
+        }
     }
 
     @Override
     public void decode(String encoded) {
-        Object[] nmsItemStacks = nmsBridge.decode(encoded);
+        Object[] nmsItemStacks;
+        try {
+            nmsItemStacks = nmsBridge.decode(encoded);
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
+            log.log(Level.SEVERE, "[EnderVaults] Unable to decode bukkit vault.", e);
+            return;
+        }
+
         ItemStack[] inventoryContents = new ItemStack[nmsItemStacks.length];
         for (int i = 0; i < nmsItemStacks.length; i++) {
             try {

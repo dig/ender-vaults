@@ -1,10 +1,14 @@
 package com.github.dig.endervaults.nms;
 
+import java.lang.reflect.InvocationTargetException;
+
 public interface VaultNMS {
 
-    String encode(Object[] craftItemStacks);
+    boolean init(MinecraftVersion version);
 
-    Object[] decode(String encoded);
+    String encode(Object[] craftItemStacks) throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException;
+
+    Object[] decode(String encoded) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException;
 
     default Class<?> getItemStackClass() throws ClassNotFoundException {
         MinecraftVersion minecraftVersion = NMSProvider.getVersion();

@@ -19,6 +19,8 @@ public class NMSProvider {
         if (bridge == null) {
             bridge = instance;
             version = ver;
+
+            instance.init(ver);
             log.log(Level.INFO, "[EnderVaults] Found version: " + version.toString() + ", supported!");
         }
     }
