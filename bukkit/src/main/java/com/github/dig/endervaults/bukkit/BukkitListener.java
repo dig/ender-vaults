@@ -48,7 +48,7 @@ public class BukkitListener implements Listener {
         Inventory inventory = event.getInventory();
 
         if (inventory != null && item != null && isBlacklistEnabled()) {
-            if (registry.isVault(inventory) && getBlacklisted().contains(item.getType())) {
+            if (!player.hasPermission("endervaults.bypass.blacklist") && getBlacklisted().contains(item.getType()) && registry.isVault(inventory)) {
                 player.sendMessage(plugin.getLanguage().get(Lang.BLACKLISTED_ITEM));
                 event.setCancelled(true);
             }
@@ -62,7 +62,7 @@ public class BukkitListener implements Listener {
         Inventory inventory = event.getDestination();
 
         if (inventory != null && item != null && isBlacklistEnabled()) {
-            if (registry.isVault(inventory) && getBlacklisted().contains(item.getType())) {
+            if (getBlacklisted().contains(item.getType()) && registry.isVault(inventory)) {
                 event.setCancelled(true);
             }
         }
@@ -77,7 +77,7 @@ public class BukkitListener implements Listener {
         Inventory inventory = event.getInventory();
 
         if (inventory != null && item != null && isBlacklistEnabled()) {
-            if (registry.isVault(inventory) && getBlacklisted().contains(item.getType())) {
+            if (!player.hasPermission("endervaults.bypass.blacklist") && getBlacklisted().contains(item.getType()) && registry.isVault(inventory)) {
                 player.sendMessage(plugin.getLanguage().get(Lang.BLACKLISTED_ITEM));
                 event.setCancelled(true);
             }
