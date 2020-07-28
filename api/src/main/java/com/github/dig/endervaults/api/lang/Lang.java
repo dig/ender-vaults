@@ -7,6 +7,7 @@ public enum Lang {
     VAULT_SELECTOR_TITLE("vault-selector-title"),
     ADMIN_VAULT_SELECTOR_TITLE("admin-vault-selector-title"),
     VAULT_TITLE("vault-title"),
+    VAULT_SELECT_ICON_TITLE("vault-select-icon-title"),
     INVALID_VAULT_ORDER("invalid-vault-order"),
     PLAYER_NOT_LOADED("player-not-loaded"),
     NO_PERMISSION("no-permission"),

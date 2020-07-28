@@ -1,4 +1,4 @@
-package com.github.dig.endervaults.bukkit.selector;
+package com.github.dig.endervaults.bukkit.ui.selector;
 
 public class SelectorConstants {
 

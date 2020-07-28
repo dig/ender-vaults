@@ -24,10 +24,51 @@ selector:
   static-item:
     unlocked: CHEST
     locked: REDSTONE_BLOCK
+  # Player selects icon per vault.
+  select-icon:
+    # Allow the player to select
+    # vault icon by right clicking?
+    enabled: true
+    # Size of the inventory.
+    # single chest is 3
+    # double chest is 6
+    rows: 3
+    # All available items to select.
+    # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+    items:
+      - COAL
+      - IRON_INGOT
+      - IRON_BLOCK
+      - GOLD_INGOT
+      - GOLD_BLOCK
+      - DIAMOND
+      - DIAMOND_BLOCK
+      - EMERALD
+      - EMERALD_BLOCK
+      - REDSTONE
+      - REDSTONE_BLOCK
+      - OBSIDIAN
+      - BEDROCK
+      - DIAMOND_SWORD
+      - DIAMOND_AXE
+      - DIAMOND_PICKAXE
+      - DIAMOND_SHOVEL
+      - DIAMOND_HOE
+      - DIAMOND_HELMET
+      - DIAMOND_CHESTPLATE
+      - DIAMOND_LEGGINGS
+      - DIAMOND_BOOTS
+      - ENCHANTED_GOLDEN_APPLE
+      - BOW
+      - ARROW
+      - APPLE
+      - WHEAT
   # Item designs, how the items look etc.
   template:
     # Unlocked vault item
     unlocked:
+      # Available placeholders:
+      #    - %order (vault order number)
       title: '&5Vault #%order'
       # Available placeholders:
       #    - %filled_slots (slots that are filled by items)
@@ -36,7 +77,8 @@ selector:
       lore:
         - '&7%filled_slots/%total_slots slots filled.'
         - '&f '
-        - '&6&lClick me &fto open.'
+        - '&6&lLeft Click &fto open.'
+        - '&6&lRight Click &fto change icon.'
     # Locked vault item
     locked:
       title: '&5Vault &c(Locked)'

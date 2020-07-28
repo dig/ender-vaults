@@ -1,4 +1,4 @@
-package com.github.dig.endervaults.bukkit.selector;
+package com.github.dig.endervaults.bukkit.ui.selector;
 
 import com.github.dig.endervaults.api.PluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;

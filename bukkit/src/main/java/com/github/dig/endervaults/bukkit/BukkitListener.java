@@ -4,7 +4,7 @@ import com.github.dig.endervaults.api.PluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;
 import com.github.dig.endervaults.api.permission.UserPermission;
 import com.github.dig.endervaults.api.vault.VaultPersister;
-import com.github.dig.endervaults.bukkit.selector.SelectorInventory;
+import com.github.dig.endervaults.bukkit.ui.selector.SelectorInventory;
 import com.github.dig.endervaults.bukkit.vault.BukkitVaultRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

@@ -1,10 +1,11 @@
-package com.github.dig.endervaults.bukkit.selector;
+package com.github.dig.endervaults.bukkit.ui.selector;
 
 import com.github.dig.endervaults.api.PluginProvider;
 import com.github.dig.endervaults.api.permission.UserPermission;
 import com.github.dig.endervaults.api.vault.Vault;
 import com.github.dig.endervaults.api.vault.VaultRegistry;
 import com.github.dig.endervaults.api.vault.metadata.VaultDefaultMetadata;
+import com.github.dig.endervaults.bukkit.ui.icon.SelectIconInventory;
 import com.github.dig.endervaults.bukkit.vault.BukkitVault;
 import com.github.dig.endervaults.bukkit.vault.BukkitVaultFactory;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.Inventory;
@@ -32,6 +34,7 @@ public class SelectorListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         Inventory inventory = event.getClickedInventory();
         ItemStack item = event.getCurrentItem();
+        ClickType type = event.getClick();
 
         if (inventory != null && item != null && item.getType() != Material.AIR) {
             NBTItem nbtItem = new NBTItem(item);
@@ -43,8 +46,13 @@ public class SelectorListener implements Listener {
 
                     registry.get(vaultOwnerUUID, vaultID).ifPresent(vault -> {
                         BukkitVault bukkitVault = (BukkitVault) vault;
-                        if (permission.canUseVault(player, (int) bukkitVault.getMetadata().get(VaultDefaultMetadata.ORDER.getKey()))) {
-                            bukkitVault.launchFor(player);
+
+                        if (type == ClickType.LEFT) {
+                            if (permission.canUseVault(player, (int) bukkitVault.getMetadata().get(VaultDefaultMetadata.ORDER.getKey()))) {
+                                bukkitVault.launchFor(player);
+                            }
+                        } else if (type == ClickType.RIGHT) {
+                            new SelectIconInventory(vault).launchFor(player);
                         }
                     });
                 } else if (nbtItem.hasKey(SelectorConstants.NBT_VAULT_ORDER) && nbtItem.hasKey(SelectorConstants.NBT_VAULT_OWNER_UUID)) {

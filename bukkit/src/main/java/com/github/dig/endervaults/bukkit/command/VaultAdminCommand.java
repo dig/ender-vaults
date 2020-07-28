@@ -6,7 +6,7 @@ import com.github.dig.endervaults.api.lang.Lang;
 import com.github.dig.endervaults.api.lang.Language;
 import com.github.dig.endervaults.api.permission.UserPermission;
 import com.github.dig.endervaults.api.vault.metadata.VaultDefaultMetadata;
-import com.github.dig.endervaults.bukkit.selector.SelectorInventory;
+import com.github.dig.endervaults.bukkit.ui.selector.SelectorInventory;
 import com.github.dig.endervaults.bukkit.vault.BukkitVault;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,7 +15,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class VaultAdminCommand implements CommandExecutor {
