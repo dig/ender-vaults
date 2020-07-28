@@ -77,8 +77,8 @@ selector:
       lore:
         - '&7%filled_slots/%total_slots slots filled.'
         - '&f '
-        - '&6&lLeft Click &fto open.'
-        - '&6&lRight Click &fto change icon.'
+        - '&aLeft Click to open.'
+        - '&eRight Click to change icon.'
     # Locked vault item
     locked:
       title: '&5Vault &c(Locked)'
