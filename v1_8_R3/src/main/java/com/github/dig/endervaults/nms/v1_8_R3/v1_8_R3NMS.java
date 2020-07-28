@@ -88,14 +88,20 @@ public class v1_8_R3NMS implements VaultNMS {
         int nbtTagListSize = (int) nbtTagListSizeMethod.invoke(nbtTagList);
 
         Method nbtTagCompoundIsEmptyMethod = nbtTagCompoundClass.getMethod("isEmpty");
-        Method itemStackAMethod = nbtItemStackClass.getMethod("a", nbtTagCompoundClass);
         Object items = Array.newInstance(nbtItemStackClass, nbtTagListSize);
+
+        Method itemStackCreateMethod;
+        try {
+            itemStackCreateMethod = nbtItemStackClass.getMethod("a", nbtTagCompoundClass);
+        } catch (NoSuchMethodException e) {
+            itemStackCreateMethod = nbtItemStackClass.getMethod("createStack", nbtTagCompoundClass);
+        }
 
         for (int i = 0; i < nbtTagListSize; ++i) {
             Object nbtTagCompound = nbtTagListGetMethod.invoke(nbtTagList, i);
             boolean isEmpty = (boolean) nbtTagCompoundIsEmptyMethod.invoke(nbtTagCompound);
             if (!isEmpty) {
-                Array.set(items, i, itemStackAMethod.invoke(null, nbtTagCompound));
+                Array.set(items, i, itemStackCreateMethod.invoke(null, nbtTagCompound));
             }
         }
 
