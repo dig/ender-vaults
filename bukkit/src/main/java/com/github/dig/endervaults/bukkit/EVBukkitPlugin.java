@@ -63,9 +63,11 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
     @Override
     public MinecraftVersion getVersion() {
         String version = Bukkit.getServer().getClass().getPackage().getName();
-        MinecraftVersion nmsVersion = MinecraftVersion.valueOf(version.substring(version.lastIndexOf('.') + 1));
-        if (nmsVersion != null) return nmsVersion;
-        return null;
+        try {
+            return MinecraftVersion.valueOf(version.substring(version.lastIndexOf('.') + 1));
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     @Override
@@ -150,8 +152,11 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
 
     private void setNMSProvider() throws InvalidMinecraftVersionException {
         MinecraftVersion version = getVersion();
-        VaultNMS bridge;
+        if (version == null) {
+            throw new InvalidMinecraftVersionException("Version of Minecraft not supported.");
+        }
 
+        VaultNMS bridge;
         switch (version) {
             case v1_8_R3:
             case v1_9_R1:
