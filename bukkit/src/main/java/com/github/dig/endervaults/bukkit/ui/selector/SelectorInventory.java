@@ -13,6 +13,7 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import lombok.extern.java.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -33,6 +34,7 @@ public class SelectorInventory {
     private final VaultRegistry registry = plugin.getRegistry();
     private final UserPermission<Player> permission = plugin.getPermission();
     private final MinecraftVersion version = plugin.getVersion();
+    private final boolean useLegacyMaterials = version.ordinal() < MinecraftVersion.v1_13_R1.ordinal();
 
     private final UUID ownerUUID;
     private final int page;
@@ -110,6 +112,7 @@ public class SelectorInventory {
         FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
 
         Material material;
+        int data = 0;
         switch (mode) {
             case STATIC:
                 material = Material.valueOf(configuration.getString("selector.static-item.unlocked", Material.CHEST.toString()));
@@ -117,6 +120,7 @@ public class SelectorInventory {
             case PANE_BY_FILL:
             default:
                 material = getGlass(filled, size);
+                data = getGlassData(filled, size);
                 break;
         }
 
@@ -125,6 +129,9 @@ public class SelectorInventory {
         }
 
         ItemStack item = new ItemStack(material, 1);
+        if (useLegacyMaterials && data > 0) {
+            item.setDurability((byte) data);
+        }
 
         ItemMeta meta = item.getItemMeta();
         String title = configuration.getString("selector.template.unlocked.title")
@@ -151,7 +158,6 @@ public class SelectorInventory {
 
     private Material getGlass(int filled, int total) {
         double percent = ((double) filled / (double) total) * 100;
-        boolean useLegacyMaterials = version.ordinal() < MinecraftVersion.v1_13_R1.ordinal();
         if (percent >= 100) {
             return useLegacyMaterials ? Material.valueOf("STAINED_GLASS_PANE") : Material.RED_STAINED_GLASS_PANE;
         } else if (percent > 60) {
@@ -164,22 +170,41 @@ public class SelectorInventory {
         return useLegacyMaterials ? Material.valueOf("STAINED_GLASS_PANE") : Material.WHITE_STAINED_GLASS_PANE;
     }
 
+    private int getGlassData(int filled, int total) {
+        double percent = ((double) filled / (double) total) * 100;
+        if (percent >= 100) {
+            return 14;
+        } else if (percent > 60) {
+            return 1;
+        } else if (percent > 30) {
+            return 4;
+        } else if (percent > 0) {
+            return 5;
+        }
+        return 0;
+    }
+
     private ItemStack createLockedItem() {
         FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
 
         Material material;
+        int data = 0;
         switch (mode) {
             case STATIC:
                 material = Material.valueOf(configuration.getString("selector.static-item.locked", Material.REDSTONE_BLOCK.toString()));
                 break;
             case PANE_BY_FILL:
             default:
-                boolean useLegacyMaterials = version.ordinal() < MinecraftVersion.v1_13_R1.ordinal();
                 material = useLegacyMaterials ? Material.valueOf("STAINED_GLASS_PANE") : Material.GRAY_STAINED_GLASS_PANE;
+                data = 7;
                 break;
         }
 
         ItemStack item = new ItemStack(material, 1);
+        if (useLegacyMaterials && data > 0) {
+            item.setDurability((byte) data);
+        }
+
         ItemMeta meta = item.getItemMeta();
         String title = configuration.getString("selector.template.locked.title");
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', title));
