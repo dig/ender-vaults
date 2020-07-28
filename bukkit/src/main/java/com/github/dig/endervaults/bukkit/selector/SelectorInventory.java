@@ -42,6 +42,17 @@ public class SelectorInventory {
         init();
     }
 
+    public SelectorInventory(UUID ownerUUID, int page, String title) {
+        FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
+        int size = configuration.getInt("selector.rows", 6) * 9;
+
+        this.ownerUUID = ownerUUID;
+        this.page = page;
+        this.inventory = Bukkit.createInventory(null, size, title);
+
+        init();
+    }
+
     private void init() {
         FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
         // ItemStack locked = createLockedItem();

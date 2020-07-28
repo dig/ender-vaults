@@ -9,6 +9,7 @@ import com.github.dig.endervaults.api.storage.DataStorage;
 import com.github.dig.endervaults.api.storage.Storage;
 import com.github.dig.endervaults.api.vault.VaultPersister;
 import com.github.dig.endervaults.api.vault.metadata.VaultMetadataRegistry;
+import com.github.dig.endervaults.bukkit.command.VaultAdminCommand;
 import com.github.dig.endervaults.bukkit.command.VaultReloadCommand;
 import com.github.dig.endervaults.bukkit.selector.SelectorListener;
 import com.github.dig.endervaults.bukkit.storage.YamlStorage;
@@ -183,6 +184,7 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
     private void registerCommands() {
         getCommand("vault").setExecutor(new VaultCommand());
         getCommand("vaultreload").setExecutor(new VaultReloadCommand());
+        getCommand("vaultadmin").setExecutor(new VaultAdminCommand());
     }
 
     private void registerMetadataConverters() {

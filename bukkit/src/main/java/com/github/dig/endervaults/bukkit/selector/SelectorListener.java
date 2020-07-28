@@ -39,25 +39,26 @@ public class SelectorListener implements Listener {
                     UUID vaultOwnerUUID = UUID.fromString(nbtItem.getString(SelectorConstants.NBT_VAULT_OWNER_UUID));
 
                     registry.get(vaultOwnerUUID, vaultID).ifPresent(vault -> ((BukkitVault) vault).launchFor(player));
-                    event.setCancelled(true);
-                } else if (nbtItem.hasKey(SelectorConstants.NBT_VAULT_ORDER)) {
+                } else if (nbtItem.hasKey(SelectorConstants.NBT_VAULT_ORDER) && nbtItem.hasKey(SelectorConstants.NBT_VAULT_OWNER_UUID)) {
                     int orderValue = nbtItem.getInteger(SelectorConstants.NBT_VAULT_ORDER);
+                    UUID vaultOwnerUUID = UUID.fromString(nbtItem.getString(SelectorConstants.NBT_VAULT_OWNER_UUID));
+
                     Optional<Vault> vaultOptional = registry
-                            .getByMetadata(player.getUniqueId(), VaultDefaultMetadata.ORDER.getKey(), orderValue);
+                            .getByMetadata(vaultOwnerUUID, VaultDefaultMetadata.ORDER.getKey(), orderValue);
 
                     BukkitVault vault;
                     if (vaultOptional.isPresent()) {
                         vault = (BukkitVault) vaultOptional.get();
                     } else {
-                        vault = (BukkitVault) BukkitVaultFactory.create(player.getUniqueId(), new HashMap<String, Object>(){{
+                        vault = (BukkitVault) BukkitVaultFactory.create(vaultOwnerUUID, new HashMap<String, Object>(){{
                             put(VaultDefaultMetadata.ORDER.getKey(), orderValue);
                         }});
-                        registry.register(player.getUniqueId(), vault);
+                        registry.register(vaultOwnerUUID, vault);
                     }
 
                     vault.launchFor(player);
-                    event.setCancelled(true);
                 }
+                event.setCancelled(true);
             }
         }
     }

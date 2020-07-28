@@ -9,4 +9,7 @@ commands:
     aliases: [vaults, ev, endervault, endervaults, pv, playervault, playervaults]
   vaultreload:
     description: Reload endervault configuration files
-    aliases: [pvreload]
+    aliases: [pvreload, evadmin]
+  vaultadmin:
+    description: Access players vaults as an admin
+    aliases: [pvadmin, evadmin]

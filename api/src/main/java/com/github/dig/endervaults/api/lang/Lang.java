@@ -5,12 +5,14 @@ import lombok.Getter;
 public enum Lang {
 
     VAULT_SELECTOR_TITLE("vault-selector-title"),
+    ADMIN_VAULT_SELECTOR_TITLE("admin-vault-selector-title"),
     VAULT_TITLE("vault-title"),
     INVALID_VAULT_ORDER("invalid-vault-order"),
     PLAYER_NOT_LOADED("player-not-loaded"),
     NO_PERMISSION("no-permission"),
     CONFIG_RELOAD("config-reload"),
-    BLACKLISTED_ITEM("blacklisted-item");
+    BLACKLISTED_ITEM("blacklisted-item"),
+    PLAYER_NOT_FOUND("player-not-found");
 
     @Getter
     private String key;
