@@ -100,25 +100,5 @@ public class v1_8_R3NMS implements VaultNMS {
         }
 
         return (Object[]) items;
-
-        /*
-        NBTTagList nbtTagList;
-        try {
-            nbtTagList = (NBTTagList) readNbt.invoke(null, dataInputStream, 0, new NBTReadLimiter(Long.MAX_VALUE));
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            log.log(Level.SEVERE, "[EnderVaults] Unable to invoke readNbt.", e);
-            return null;
-        }
-
-        ItemStack[] items = new ItemStack[nbtTagList.size()];
-        for (int i = 0; i < nbtTagList.size(); ++i) {
-            NBTTagCompound nbtTagCompound = (NBTTagCompound) nbtTagList.get(i);
-            if (!nbtTagCompound.isEmpty()) {
-                items[i] = ItemStack.a(nbtTagCompound);
-            }
-        }
-
-        return items;
-         */
     }
 }
