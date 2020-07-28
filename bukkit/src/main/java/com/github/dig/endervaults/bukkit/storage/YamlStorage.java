@@ -25,7 +25,8 @@ public class YamlStorage implements DataStorage {
     private final EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
 
     @Override
-    public void init() {
+    public boolean init() {
+        return true;
     }
 
     @Override

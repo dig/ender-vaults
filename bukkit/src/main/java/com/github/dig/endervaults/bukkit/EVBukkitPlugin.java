@@ -116,14 +116,7 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
     public void onEnable() {
         if (!setProviders()) return;
         loadConfiguration();
-
-        try {
-            setupDataStorage();
-        } catch (IllegalArgumentException e) {
-            log.log(Level.SEVERE, "[EnderVaults] Unable to set data storage, disabling...", e);
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
+        if (!setupDataStorage()) return;
 
         setupManagers();
         setupTasks();
@@ -135,8 +128,12 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
 
     @Override
     public void onDisable() {
-        autoSaveTask.cancel();
-        persister.save();
+        if (autoSaveTask != null) {
+            autoSaveTask.cancel();
+        }
+        if (persister != null) {
+            persister.save();
+        }
         dataStorage.close();
     }
 
@@ -189,9 +186,16 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
         configFile = new BukkitDataFile(new File(getDataFolder(), "config.yml"));
     }
 
-    private void setupDataStorage() throws IllegalArgumentException {
+    private boolean setupDataStorage() {
         Configuration configuration = (Configuration) configFile.getConfiguration();
-        Storage storage = Storage.valueOf(configuration.getString("storage.method"));
+        Storage storage;
+        try {
+            storage = Storage.valueOf(configuration.getString("storage.method"));
+        } catch (IllegalArgumentException e) {
+            log.log(Level.SEVERE, "[EnderVaults] Unknown data storage set, disabling...");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return false;
+        }
 
         switch (storage) {
             case FLATFILE:
@@ -203,7 +207,13 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
         }
 
         log.log(Level.INFO, "[EnderVaults] Using data storage: " + storage.toString() + ".");
-        dataStorage.init();
+        if (!dataStorage.init()) {
+            log.log(Level.SEVERE, "[EnderVaults] Error with data storage, disabling...");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return false;
+        }
+
+        return true;
     }
 
     private void setupManagers() {
@@ -216,7 +226,6 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
 
     private void setupTasks() {
         FileConfiguration configuration = (FileConfiguration) configFile.getConfiguration();
-
         int autoSaveMins = configuration.getInt("auto-save.minutes", 15);
         autoSaveTask = Bukkit.getScheduler().runTaskTimerAsynchronously(this, new BukkitVaultAutoSave(), autoSaveMins * 60 * 20, autoSaveMins * 60 * 20);
     }

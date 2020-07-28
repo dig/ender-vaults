@@ -6,20 +6,24 @@ import com.github.dig.endervaults.api.vault.Vault;
 import com.github.dig.endervaults.bukkit.EVBukkitPlugin;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import com.zaxxer.hikari.pool.HikariPool;
+import lombok.extern.java.Log;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Level;
 
+@Log
 public class HikariMySQLStorage implements DataStorage {
 
     private final EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
     private HikariDataSource hikariDataSource;
 
     @Override
-    public void init() {
+    public boolean init() {
         FileConfiguration config = (FileConfiguration) plugin.getConfigFile().getConfiguration();
         ConfigurationSection settings = config.getConfigurationSection("storage.settings.mysql");
 
@@ -38,12 +42,19 @@ public class HikariMySQLStorage implements DataStorage {
         for (String key : properties.getKeys(false)) {
             hikariConfig.addDataSourceProperty(key, properties.getString(key));
         }
-        hikariDataSource = new HikariDataSource(hikariConfig);
+
+        try {
+            hikariDataSource = new HikariDataSource(hikariConfig);
+            return hikariDataSource.isRunning();
+        } catch (HikariPool.PoolInitializationException e) {
+            log.log(Level.SEVERE, "[EnderVaults] Unable to connect to database.", e);
+            return false;
+        }
     }
 
     @Override
     public void close() {
-        if (hikariDataSource.isRunning()) {
+        if (hikariDataSource != null && hikariDataSource.isRunning()) {
             hikariDataSource.close();
         }
     }
