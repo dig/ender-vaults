@@ -42,6 +42,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.logging.Level;
 
@@ -61,6 +62,7 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
     private BukkitTask autoSaveTask;
 
     @Override
+    @Nullable
     public MinecraftVersion getVersion() {
         String version = Bukkit.getServer().getClass().getPackage().getName();
         try {
