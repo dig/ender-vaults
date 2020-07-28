@@ -2,6 +2,7 @@ package com.github.dig.endervaults.api;
 
 import com.github.dig.endervaults.api.file.DataFile;
 import com.github.dig.endervaults.api.lang.Language;
+import com.github.dig.endervaults.api.permission.UserPermission;
 import com.github.dig.endervaults.api.storage.DataStorage;
 import com.github.dig.endervaults.api.vault.VaultPersister;
 import com.github.dig.endervaults.api.vault.metadata.VaultMetadataRegistry;
@@ -23,6 +24,8 @@ public interface EnderVaultsPlugin {
     DataStorage getDataStorage();
 
     VaultPersister getPersister();
+
+    UserPermission getPermission();
 
     VaultMetadataRegistry getMetadataRegistry();
 }

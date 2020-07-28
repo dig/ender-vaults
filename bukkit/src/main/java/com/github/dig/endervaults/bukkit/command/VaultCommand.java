@@ -3,6 +3,8 @@ package com.github.dig.endervaults.bukkit.command;
 import com.github.dig.endervaults.api.EnderVaultsPlugin;
 import com.github.dig.endervaults.api.PluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;
+import com.github.dig.endervaults.api.lang.Language;
+import com.github.dig.endervaults.api.permission.UserPermission;
 import com.github.dig.endervaults.api.vault.Vault;
 import com.github.dig.endervaults.api.vault.VaultRegistry;
 import com.github.dig.endervaults.api.vault.metadata.VaultDefaultMetadata;
@@ -20,19 +22,21 @@ import java.util.Optional;
 public class VaultCommand implements CommandExecutor {
 
     private final EnderVaultsPlugin plugin = PluginProvider.getPlugin();
+    private final Language language = plugin.getLanguage();
+    private final UserPermission permission = plugin.getPermission();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (!player.hasPermission("endervaults.command.use")) {
-                sender.sendMessage(plugin.getLanguage().get(Lang.NO_PERMISSION));
+            if (!permission.canUseVaultCommand(player)) {
+                sender.sendMessage(language.get(Lang.NO_PERMISSION));
                 return true;
             }
 
             if (!plugin.getPersister().isLoaded(player.getUniqueId())) {
-                sender.sendMessage(plugin.getLanguage().get(Lang.PLAYER_NOT_LOADED));
+                sender.sendMessage(language.get(Lang.PLAYER_NOT_LOADED));
                 return true;
             }
 
@@ -43,12 +47,17 @@ public class VaultCommand implements CommandExecutor {
                 try {
                     orderValue = Integer.parseInt(args[0]);
                 } catch (NumberFormatException e) {
-                    sender.sendMessage(plugin.getLanguage().get(Lang.INVALID_VAULT_ORDER));
+                    sender.sendMessage(language.get(Lang.INVALID_VAULT_ORDER));
                     return true;
                 }
 
                 if (orderValue <= 0) {
-                    sender.sendMessage(plugin.getLanguage().get(Lang.INVALID_VAULT_ORDER));
+                    sender.sendMessage(language.get(Lang.INVALID_VAULT_ORDER));
+                    return true;
+                }
+
+                if (!permission.canUseVault(player, orderValue)) {
+                    sender.sendMessage(language.get(Lang.NO_PERMISSION));
                     return true;
                 }
 

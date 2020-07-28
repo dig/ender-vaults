@@ -2,6 +2,7 @@ package com.github.dig.endervaults.bukkit;
 
 import com.github.dig.endervaults.api.PluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;
+import com.github.dig.endervaults.api.permission.UserPermission;
 import com.github.dig.endervaults.api.vault.VaultPersister;
 import com.github.dig.endervaults.bukkit.selector.SelectorInventory;
 import com.github.dig.endervaults.bukkit.vault.BukkitVaultRegistry;
@@ -30,6 +31,7 @@ public class BukkitListener implements Listener {
 
     private final EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
     private final VaultPersister persister = plugin.getPersister();
+    private final UserPermission permission = plugin.getPermission();
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event) {
@@ -52,7 +54,7 @@ public class BukkitListener implements Listener {
         Inventory inventory = event.getInventory();
 
         if (inventory != null && item != null && isBlacklistEnabled()) {
-            if (!player.hasPermission("endervaults.bypass.blacklist") && getBlacklisted().contains(item.getType()) && registry.isVault(inventory)) {
+            if (!permission.canBypassBlacklist(player) && getBlacklisted().contains(item.getType()) && registry.isVault(inventory)) {
                 player.sendMessage(plugin.getLanguage().get(Lang.BLACKLISTED_ITEM));
                 event.setCancelled(true);
             }
@@ -81,7 +83,7 @@ public class BukkitListener implements Listener {
         Inventory inventory = event.getInventory();
 
         if (inventory != null && item != null && isBlacklistEnabled()) {
-            if (!player.hasPermission("endervaults.bypass.blacklist") && getBlacklisted().contains(item.getType()) && registry.isVault(inventory)) {
+            if (!permission.canBypassBlacklist(player) && getBlacklisted().contains(item.getType()) && registry.isVault(inventory)) {
                 player.sendMessage(plugin.getLanguage().get(Lang.BLACKLISTED_ITEM));
                 event.setCancelled(true);
             }

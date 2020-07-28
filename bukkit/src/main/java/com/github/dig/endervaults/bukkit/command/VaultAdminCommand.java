@@ -4,6 +4,7 @@ import com.github.dig.endervaults.api.EnderVaultsPlugin;
 import com.github.dig.endervaults.api.PluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;
 import com.github.dig.endervaults.api.lang.Language;
+import com.github.dig.endervaults.api.permission.UserPermission;
 import com.github.dig.endervaults.api.vault.metadata.VaultDefaultMetadata;
 import com.github.dig.endervaults.bukkit.selector.SelectorInventory;
 import com.github.dig.endervaults.bukkit.vault.BukkitVault;
@@ -21,12 +22,13 @@ public class VaultAdminCommand implements CommandExecutor {
 
     private final EnderVaultsPlugin plugin = PluginProvider.getPlugin();
     private final Language language = plugin.getLanguage();
+    private final UserPermission permission = plugin.getPermission();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (player.hasPermission("endervaults.admin")) {
+            if (permission.isVaultAdmin(player)) {
                 if (args.length == 0) {
                     sender.sendMessage(ChatColor.RED + "Usage: /pvadmin <name> [vault]");
                 } else if (args.length == 1) {

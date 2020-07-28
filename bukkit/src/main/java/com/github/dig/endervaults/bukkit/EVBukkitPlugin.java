@@ -5,12 +5,14 @@ import com.github.dig.endervaults.api.PluginProvider;
 import com.github.dig.endervaults.api.exception.PluginAlreadySetException;
 import com.github.dig.endervaults.api.file.DataFile;
 import com.github.dig.endervaults.api.lang.Language;
+import com.github.dig.endervaults.api.permission.UserPermission;
 import com.github.dig.endervaults.api.storage.DataStorage;
 import com.github.dig.endervaults.api.storage.Storage;
 import com.github.dig.endervaults.api.vault.VaultPersister;
 import com.github.dig.endervaults.api.vault.metadata.VaultMetadataRegistry;
 import com.github.dig.endervaults.bukkit.command.VaultAdminCommand;
 import com.github.dig.endervaults.bukkit.command.VaultReloadCommand;
+import com.github.dig.endervaults.bukkit.permission.BukkitUserPermission;
 import com.github.dig.endervaults.bukkit.selector.SelectorListener;
 import com.github.dig.endervaults.bukkit.storage.YamlStorage;
 import com.github.dig.endervaults.bukkit.storage.HikariMySQLStorage;
@@ -48,6 +50,7 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
     private VaultMetadataRegistry metadataRegistry;
     private DataStorage dataStorage;
     private VaultPersister persister;
+    private BukkitUserPermission permission;
 
     private BukkitTask autoSaveTask;
 
@@ -87,6 +90,11 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
     @Override
     public VaultPersister getPersister() {
         return persister;
+    }
+
+    @Override
+    public UserPermission getPermission() {
+        return permission;
     }
 
     @Override
@@ -172,6 +180,7 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
         language = new BukkitLanguage();
         metadataRegistry = new BukkitVaultMetadataRegistry();
         persister = new BukkitVaultPersister();
+        permission = new BukkitUserPermission();
     }
 
     private void setupTasks() {
