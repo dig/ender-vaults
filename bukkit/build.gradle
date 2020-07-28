@@ -17,5 +17,8 @@ dependencies {
 
 shadowJar {
     archiveName = "EnderVaults-Bukkit-v${project.ext.version}.jar"
-    relocate 'de.tr7zw.changeme.nbtapi', 'com.github.dig.endervaults.bukkit.nbt'
+
+    relocate 'de.tr7zw.changeme.nbtapi', 'com.github.dig.endervaults.lib.nbt'
+    relocate 'com.zaxxer.hikari', 'com.github.dig.endervaults.lib.hikari'
+    relocate 'org.javatuples', 'com.github.dig.endervaults.lib.javatuples'
 }
