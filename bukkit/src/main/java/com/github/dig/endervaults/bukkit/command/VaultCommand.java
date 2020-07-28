@@ -26,6 +26,11 @@ public class VaultCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
+            if (!player.hasPermission("endervaults.command.use")) {
+                sender.sendMessage(plugin.getLanguage().get(Lang.NO_PERMISSION));
+                return true;
+            }
+
             if (!plugin.getPersister().isLoaded(player.getUniqueId())) {
                 sender.sendMessage(plugin.getLanguage().get(Lang.PLAYER_NOT_LOADED));
                 return true;
