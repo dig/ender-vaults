@@ -36,7 +36,7 @@ public class VaultAdminCommand implements CommandExecutor {
                         return true;
                     }
 
-                    String title = language.get(Lang.ADMIN_VAULT_SELECTOR_TITLE, new HashMap<>(){{
+                    String title = language.get(Lang.ADMIN_VAULT_SELECTOR_TITLE, new HashMap<String, Object>(){{
                         put("player", target.getName());
                     }});
                     new SelectorInventory(target.getUniqueId(), 1, title).launchFor(player);
