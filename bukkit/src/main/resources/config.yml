@@ -7,6 +7,19 @@ selector:
   # Should vaults that the player has no
   # permission be shown?
   show-locked: true
+  # Possible modes:
+  #   - PANE_BY_FILL    (default, each vault will be a glass pane
+  #                      colour depending on how full the vault is)
+  #   - STATIC          (each vault will be a static item defined below)
+  design-mode: PANE_BY_FILL
+  # Only used if STATIC above, every item will be
+  # this material in the selector.
+  static-item:
+    unlocked: CHEST
+    locked: REDSTONE_BLOCK
+  # Allow the player to select the item of
+  # each vault? (permission is endervaults.select.item)
+  allow-item-selection: true
   # Item designs, how the items look etc.
   template:
     # Unlocked vault item

@@ -2,6 +2,7 @@ package com.github.dig.endervaults.bukkit.selector;
 
 import com.github.dig.endervaults.api.PluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;
+import com.github.dig.endervaults.api.selector.SelectorMode;
 import com.github.dig.endervaults.api.vault.Vault;
 import com.github.dig.endervaults.api.vault.VaultRegistry;
 import com.github.dig.endervaults.api.vault.metadata.VaultDefaultMetadata;
@@ -28,6 +29,7 @@ public class SelectorInventory {
 
     private final UUID ownerUUID;
     private final int page;
+    private final SelectorMode mode;
     private final Inventory inventory;
 
     public SelectorInventory(UUID ownerUUID, int page) {
@@ -37,6 +39,7 @@ public class SelectorInventory {
 
         this.ownerUUID = ownerUUID;
         this.page = page;
+        this.mode = SelectorMode.valueOf(configuration.getString("selector.design-mode", SelectorMode.PANE_BY_FILL.toString()));
         this.inventory = Bukkit.createInventory(null, size, title);
 
         init();
@@ -48,6 +51,7 @@ public class SelectorInventory {
 
         this.ownerUUID = ownerUUID;
         this.page = page;
+        this.mode = SelectorMode.valueOf(configuration.getString("selector.design-mode", SelectorMode.PANE_BY_FILL.toString()));
         this.inventory = Bukkit.createInventory(null, size, title);
 
         init();
@@ -80,7 +84,19 @@ public class SelectorInventory {
 
     private ItemStack createUnlockedItem(@Nullable UUID id, int order, int size, int free, int filled) {
         FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
-        ItemStack item = new ItemStack(getGlass(filled, size), 1);
+
+        Material material;
+        switch (mode) {
+            case STATIC:
+                material = Material.valueOf(configuration.getString("selector.static-item.unlocked", Material.CHEST.toString()));
+                break;
+            case PANE_BY_FILL:
+            default:
+                material = getGlass(filled, size);
+                break;
+        }
+
+        ItemStack item = new ItemStack(material, 1);
 
         ItemMeta meta = item.getItemMeta();
         String title = configuration.getString("selector.template.unlocked.title")
@@ -122,7 +138,18 @@ public class SelectorInventory {
     private ItemStack createLockedItem() {
         FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
 
-        ItemStack item = new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1);
+        Material material;
+        switch (mode) {
+            case STATIC:
+                material = Material.valueOf(configuration.getString("selector.static-item.locked", Material.REDSTONE_BLOCK.toString()));
+                break;
+            case PANE_BY_FILL:
+            default:
+                material = Material.GRAY_STAINED_GLASS_PANE;
+                break;
+        }
+
+        ItemStack item = new ItemStack(material, 1);
         ItemMeta meta = item.getItemMeta();
         String title = configuration.getString("selector.template.locked.title");
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', title));
