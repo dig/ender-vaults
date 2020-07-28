@@ -14,6 +14,7 @@ selector:
   design-mode: PANE_BY_FILL
   # Only used if STATIC above, every item will be
   # this material in the selector.
+  # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
   static-item:
     unlocked: CHEST
     locked: REDSTONE_BLOCK
