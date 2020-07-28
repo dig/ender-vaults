@@ -46,8 +46,7 @@ public class SelectorInventory {
         FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
         // ItemStack locked = createLockedItem();
         for (int i = 0; i < inventory.getSize(); i++) {
-            ItemStack item;
-            int order = (((page - 1) * inventory.getSize()) - 1) + (i + 1);
+            int order = page > 1 ? ((page - 1) * inventory.getSize()) + i : ((page - 1) * inventory.getSize()) + (i + 1);
 
             UUID id = null;
             int size = configuration.getInt("vault.default-rows", 3) * 9;
@@ -73,9 +72,10 @@ public class SelectorInventory {
         ItemStack item = new ItemStack(getGlass(filled, size), 1);
 
         ItemMeta meta = item.getItemMeta();
-        String title = configuration.getString("selector.template.unlocked.title");
+        String title = configuration.getString("selector.template.unlocked.title")
+                .replaceAll("%order", String.valueOf(order));
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', title));
-        meta.setLore(configuration.getStringList("selector.template.unlocked.title")
+        meta.setLore(configuration.getStringList("selector.template.unlocked.lore")
                 .stream()
                 .map(s -> s.replaceAll("%filled_slots", String.valueOf(filled)))
                 .map(s -> s.replaceAll("%total_slots", String.valueOf(size)))
@@ -93,7 +93,7 @@ public class SelectorInventory {
     }
 
     private Material getGlass(int filled, int total) {
-        double percent = (filled / total) * 100;
+        double percent = ((double) filled / (double) total) * 100;
         if (percent >= 100) {
             return Material.RED_STAINED_GLASS_PANE;
         } else if (percent > 60) {
@@ -101,7 +101,7 @@ public class SelectorInventory {
         } else if (percent > 30) {
             return Material.YELLOW_STAINED_GLASS_PANE;
         } else if (percent > 0) {
-            return Material.GREEN_STAINED_GLASS_PANE;
+            return Material.LIME_STAINED_GLASS_PANE;
         }
         return Material.WHITE_STAINED_GLASS_PANE;
     }
@@ -113,7 +113,7 @@ public class SelectorInventory {
         ItemMeta meta = item.getItemMeta();
         String title = configuration.getString("selector.template.locked.title");
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', title));
-        meta.setLore(configuration.getStringList("selector.template.locked.title")
+        meta.setLore(configuration.getStringList("selector.template.locked.lore")
                         .stream()
                         .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                         .collect(Collectors.toList()));

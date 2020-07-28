@@ -19,7 +19,7 @@ selector:
       lore:
         - '&7%filled_slots/%total_slots slots filled.'
         - '&f '
-        - '&7Click me to open!'
+        - '&6&lClick me &fto open.'
     # Locked vault item
     locked:
       title: '&5Vault &c(Locked)'
