@@ -11,6 +11,10 @@ import lombok.extern.java.Log;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,7 +24,10 @@ import java.util.logging.Level;
 public class HikariMySQLStorage implements DataStorage {
 
     private final EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
+
     private HikariDataSource hikariDataSource;
+    private String vaultTable;
+    private String metadataTable;
 
     @Override
     public boolean init() {
@@ -45,11 +52,17 @@ public class HikariMySQLStorage implements DataStorage {
 
         try {
             hikariDataSource = new HikariDataSource(hikariConfig);
-            return hikariDataSource.isRunning();
         } catch (HikariPool.PoolInitializationException e) {
             log.log(Level.SEVERE, "[EnderVaults] Unable to connect to database.", e);
             return false;
         }
+
+        vaultTable = settings.getString("tables.vault");
+        metadataTable = settings.getString("tables.vault-metadata");
+
+        createTableIfNotExist(vaultTable, DatabaseConstants.SQL_CREATE_TABLE_VAULT);
+        createTableIfNotExist(metadataTable, DatabaseConstants.SQL_CREATE_TABLE_VAULT_METADATA);
+        return hikariDataSource.isRunning();
     }
 
     @Override
@@ -61,7 +74,21 @@ public class HikariMySQLStorage implements DataStorage {
 
     @Override
     public boolean exists(UUID ownerUUID, UUID id) {
-        return false;
+        String sql = String.format(DatabaseConstants.SQL_SELECT_VAULT_BY_ID_AND_OWNER, vaultTable);
+
+        boolean has;
+        try (Connection conn = hikariDataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, id.toString());
+            stmt.setString(2, ownerUUID.toString());
+
+            ResultSet rs = stmt.executeQuery();
+            has = rs.next();
+        } catch (SQLException ex) {
+            log.log(Level.SEVERE, "[EnderVaults] Error while executing query.", ex);
+            return false;
+        }
+
+        return has;
     }
 
     @Override
@@ -77,5 +104,14 @@ public class HikariMySQLStorage implements DataStorage {
     @Override
     public void save(Vault vault) {
 
+    }
+
+    private void createTableIfNotExist(String table, String TABLE_SQL) {
+        TABLE_SQL = String.format(TABLE_SQL, table);
+        try (Connection conn = hikariDataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(TABLE_SQL)) {
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            log.log(Level.SEVERE, "[EnderVaults] Unable to create table " + table + ".", ex);
+        }
     }
 }
