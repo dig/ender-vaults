@@ -4,7 +4,8 @@ import lombok.Getter;
 
 public enum VaultDefaultMetadata {
 
-    ORDER("order");
+    ORDER("order"),
+    ICON("icon");
 
     @Getter
     private String key;

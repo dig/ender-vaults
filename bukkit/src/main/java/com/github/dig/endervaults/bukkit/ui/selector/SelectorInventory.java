@@ -9,6 +9,7 @@ import com.github.dig.endervaults.api.vault.VaultRegistry;
 import com.github.dig.endervaults.api.vault.metadata.VaultDefaultMetadata;
 import com.github.dig.endervaults.bukkit.EVBukkitPlugin;
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import lombok.extern.java.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -21,8 +22,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
+@Log
 public class SelectorInventory {
 
     private final EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
@@ -69,6 +72,8 @@ public class SelectorInventory {
             int order = page > 1 ? ((page - 1) * inventory.getSize()) + i : ((page - 1) * inventory.getSize()) + (i + 1);
             if (target != null && permission.canUseVault(target, order)) {
                 UUID id = null;
+                Material icon = null;
+
                 int size = configuration.getInt("vault.default-rows", 3) * 9;
                 int free = 0;
                 int filled = 0;
@@ -78,19 +83,28 @@ public class SelectorInventory {
                     Vault vault = vaultOptional.get();
 
                     id = vault.getId();
+                    if (vault.getMetadata().containsKey(VaultDefaultMetadata.ICON.getKey())) {
+                        try {
+                            icon = Material.valueOf((String) vault.getMetadata().get(VaultDefaultMetadata.ICON.getKey()));
+                        } catch (IllegalArgumentException e) {
+                            log.log(Level.SEVERE, "[EnderVaults] Attempted to load vault with non existing material.", e);
+                            vault.getMetadata().remove(VaultDefaultMetadata.ICON.getKey());
+                        }
+                    }
+
                     size = vault.getSize();
                     free = vault.getFreeSize();
                     filled = size - free;
                 }
 
-                inventory.setItem(i, createUnlockedItem(id, order, size, free, filled));
+                inventory.setItem(i, createUnlockedItem(id, order, size, free, filled, icon));
             } else if (configuration.getBoolean("selector.show-locked", true)) {
                 inventory.setItem(i, locked);
             }
         }
     }
 
-    private ItemStack createUnlockedItem(@Nullable UUID id, int order, int size, int free, int filled) {
+    private ItemStack createUnlockedItem(@Nullable UUID id, int order, int size, int free, int filled, @Nullable Material icon) {
         FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
 
         Material material;
@@ -102,6 +116,10 @@ public class SelectorInventory {
             default:
                 material = getGlass(filled, size);
                 break;
+        }
+
+        if (icon != null) {
+            material = icon;
         }
 
         ItemStack item = new ItemStack(material, 1);

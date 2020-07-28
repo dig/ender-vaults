@@ -9,6 +9,7 @@ import com.github.dig.endervaults.api.vault.metadata.VaultMetadataRegistry;
 import com.github.dig.endervaults.bukkit.EVBukkitPlugin;
 import com.github.dig.endervaults.bukkit.vault.BukkitVault;
 import com.google.common.io.Files;
+import lombok.extern.java.Log;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,7 +17,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
 
+@Log
 public class YamlStorage implements DataStorage {
 
     private final EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
@@ -53,17 +56,21 @@ public class YamlStorage implements DataStorage {
     @Override
     public Optional<Vault> load(UUID ownerUUID, UUID id) {
         if (!exists(ownerUUID, id)) return Optional.empty();
+
+        VaultMetadataRegistry metadataRegistry = plugin.getMetadataRegistry();
         FileConfiguration configuration = YamlConfiguration.loadConfiguration(getVaultFile(ownerUUID, id));
+
+        if (!configuration.contains("size") || !configuration.contains("contents") || !configuration.contains("metadata")) {
+            return Optional.empty();
+        }
 
         int size = configuration.getInt("size");
 
-        VaultMetadataRegistry metadataRegistry = plugin.getMetadataRegistry();
         ConfigurationSection metadataSection = configuration.getConfigurationSection("metadata");
-
         Map<String, Object> metadata = new HashMap<>();
         for (String key : metadataSection.getKeys(false)) {
-            Object value = metadataSection.get(key);
-            metadataRegistry.get(key).ifPresent(converter -> metadata.put(key, converter.from(value)));
+            String value = metadataSection.getString(key);
+            metadataRegistry.get(key).ifPresent(converter -> metadata.put(key, converter.to(value)));
         }
 
         String title = plugin.getLanguage().get(Lang.VAULT_TITLE, metadata);
@@ -81,12 +88,13 @@ public class YamlStorage implements DataStorage {
         file.getParentFile().mkdirs();
         file.createNewFile();
 
+        VaultMetadataRegistry metadataRegistry = plugin.getMetadataRegistry();
         FileConfiguration configuration = YamlConfiguration.loadConfiguration(file);
 
         configuration.set("size", vault.getSize());
         for (String key : vault.getMetadata().keySet()) {
             Object value = vault.getMetadata().get(key);
-            configuration.set("metadata." + key, value);
+            metadataRegistry.get(key).ifPresent(converter -> configuration.set("metadata." + key, converter.from(value)));
         }
 
         VaultSerializable serializable = (VaultSerializable) vault;

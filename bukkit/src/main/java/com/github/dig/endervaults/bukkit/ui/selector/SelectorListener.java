@@ -10,6 +10,7 @@ import com.github.dig.endervaults.bukkit.vault.BukkitVault;
 import com.github.dig.endervaults.bukkit.vault.BukkitVaultFactory;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -28,6 +29,7 @@ public class SelectorListener implements Listener {
 
     private final VaultRegistry registry = PluginProvider.getPlugin().getRegistry();
     private final UserPermission permission = PluginProvider.getPlugin().getPermission();
+    private final FileConfiguration configuration = (FileConfiguration) PluginProvider.getPlugin().getConfigFile().getConfiguration();
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onClick(InventoryClickEvent event) {
@@ -46,12 +48,11 @@ public class SelectorListener implements Listener {
 
                     registry.get(vaultOwnerUUID, vaultID).ifPresent(vault -> {
                         BukkitVault bukkitVault = (BukkitVault) vault;
-
                         if (type == ClickType.LEFT) {
                             if (permission.canUseVault(player, (int) bukkitVault.getMetadata().get(VaultDefaultMetadata.ORDER.getKey()))) {
                                 bukkitVault.launchFor(player);
                             }
-                        } else if (type == ClickType.RIGHT) {
+                        } else if (type == ClickType.RIGHT && configuration.getBoolean("selector.select-icon.enabled", true)) {
                             new SelectIconInventory(vault).launchFor(player);
                         }
                     });

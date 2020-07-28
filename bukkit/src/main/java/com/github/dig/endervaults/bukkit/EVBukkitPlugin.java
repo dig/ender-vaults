@@ -9,6 +9,7 @@ import com.github.dig.endervaults.api.permission.UserPermission;
 import com.github.dig.endervaults.api.storage.DataStorage;
 import com.github.dig.endervaults.api.storage.Storage;
 import com.github.dig.endervaults.api.vault.VaultPersister;
+import com.github.dig.endervaults.api.vault.metadata.VaultDefaultMetadata;
 import com.github.dig.endervaults.api.vault.metadata.VaultMetadataRegistry;
 import com.github.dig.endervaults.bukkit.command.VaultAdminCommand;
 import com.github.dig.endervaults.bukkit.command.VaultReloadCommand;
@@ -21,6 +22,7 @@ import com.github.dig.endervaults.bukkit.vault.BukkitVaultAutoSave;
 import com.github.dig.endervaults.bukkit.vault.BukkitVaultPersister;
 import com.github.dig.endervaults.bukkit.vault.metadata.BukkitVaultMetadataRegistry;
 import com.github.dig.endervaults.bukkit.vault.metadata.IntegerMetadataConverter;
+import com.github.dig.endervaults.bukkit.vault.metadata.StringMetadataConverter;
 import com.github.dig.endervaults.nms.InvalidMinecraftVersionException;
 import com.github.dig.endervaults.nms.MinecraftVersion;
 import com.github.dig.endervaults.api.vault.VaultRegistry;
@@ -198,7 +200,8 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
     }
 
     private void registerMetadataConverters() {
-        metadataRegistry.register("order", new IntegerMetadataConverter());
+        metadataRegistry.register(VaultDefaultMetadata.ORDER.getKey(), new IntegerMetadataConverter());
+        metadataRegistry.register(VaultDefaultMetadata.ICON.getKey(), new StringMetadataConverter());
     }
 
     private void registerListeners() {

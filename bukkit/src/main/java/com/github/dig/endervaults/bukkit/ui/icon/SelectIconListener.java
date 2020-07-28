@@ -2,7 +2,9 @@ package com.github.dig.endervaults.bukkit.ui.icon;
 
 import com.github.dig.endervaults.api.PluginProvider;
 import com.github.dig.endervaults.api.vault.VaultRegistry;
+import com.github.dig.endervaults.api.vault.metadata.VaultDefaultMetadata;
 import com.github.dig.endervaults.bukkit.ui.selector.SelectorConstants;
+import com.github.dig.endervaults.bukkit.ui.selector.SelectorInventory;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -31,6 +33,10 @@ public class SelectIconListener implements Listener {
             if (nbtItem.hasKey(SelectIconConstants.NBT_ICON_ITEM) && nbtItem.hasKey(SelectIconConstants.NBT_ICON_ID)) {
                 event.setCancelled(true);
                 UUID vaultID = UUID.fromString(nbtItem.getString(SelectIconConstants.NBT_ICON_ID));
+                UUID vaultOwnerUUID = UUID.fromString(nbtItem.getString(SelectIconConstants.NBT_ICON_OWNER_UUID));
+
+                registry.get(vaultOwnerUUID, vaultID).ifPresent(vault -> vault.getMetadata().put(VaultDefaultMetadata.ICON.getKey(), item.getType().toString()));
+                new SelectorInventory(vaultOwnerUUID, 1).launchFor(player);
             }
         }
     }

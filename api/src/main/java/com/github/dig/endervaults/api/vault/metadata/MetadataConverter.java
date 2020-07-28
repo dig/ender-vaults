@@ -2,8 +2,8 @@ package com.github.dig.endervaults.api.vault.metadata;
 
 public interface MetadataConverter<T> {
 
-    T to(Object value);
+    T to(String value);
 
-    Object from(T value);
+    String from(T value);
 
 }

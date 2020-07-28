@@ -45,9 +45,11 @@ public class SelectIconInventory {
             }
 
             ItemStack item = new ItemStack(material, 1);
+
             NBTItem nbtItem = new NBTItem(item);
             nbtItem.setBoolean(SelectIconConstants.NBT_ICON_ITEM, true);
             nbtItem.setString(SelectIconConstants.NBT_ICON_ID, vault.getId().toString());
+            nbtItem.setString(SelectIconConstants.NBT_ICON_OWNER_UUID, vault.getOwner().toString());
 
             int slot = inventory.firstEmpty();
             if (slot > -1) {
