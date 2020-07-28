@@ -1,3 +1,9 @@
+# Enderchest configuration
+enderchest:
+  # Should we open the vault selector when
+  # a player interacts with a enderchest?
+  replace-with-selector: false
+
 # Configuration for the selector
 selector:
   # 9 slots in each row

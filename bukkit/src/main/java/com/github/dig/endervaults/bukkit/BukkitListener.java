@@ -3,17 +3,21 @@ package com.github.dig.endervaults.bukkit;
 import com.github.dig.endervaults.api.PluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;
 import com.github.dig.endervaults.api.vault.VaultPersister;
+import com.github.dig.endervaults.bukkit.selector.SelectorInventory;
 import com.github.dig.endervaults.bukkit.vault.BukkitVaultRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
@@ -82,6 +86,22 @@ public class BukkitListener implements Listener {
                 event.setCancelled(true);
             }
         }
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        Block block = event.getClickedBlock();
+
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == Material.ENDER_CHEST && isEnderchestReplaced()) {
+            new SelectorInventory(player.getUniqueId(), 1).launchFor(player);
+            event.setCancelled(true);
+        }
+    }
+
+    private boolean isEnderchestReplaced() {
+        FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
+        return configuration.getBoolean("enderchest.replace-with-selector", false);
     }
 
     private boolean isBlacklistEnabled() {
