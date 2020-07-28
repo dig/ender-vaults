@@ -40,4 +40,9 @@ public class BukkitUserPermission implements UserPermission<Player> {
     public boolean canReload(Player player) {
         return player.hasPermission("endervaults.admin.reload");
     }
+
+    @Override
+    public boolean canSelectIcon(Player player) {
+        return player.hasPermission("endervaults.select.icon");
+    }
 }

@@ -52,7 +52,7 @@ public class SelectorListener implements Listener {
                             if (permission.canUseVault(player, (int) bukkitVault.getMetadata().get(VaultDefaultMetadata.ORDER.getKey()))) {
                                 bukkitVault.launchFor(player);
                             }
-                        } else if (type == ClickType.RIGHT && configuration.getBoolean("selector.select-icon.enabled", true)) {
+                        } else if (type == ClickType.RIGHT && configuration.getBoolean("selector.select-icon.enabled", true) && permission.canSelectIcon(player)) {
                             new SelectIconInventory(vault).launchFor(player);
                         }
                     });

@@ -14,4 +14,6 @@ public interface UserPermission<P> {
 
     boolean canReload(P player);
 
+    boolean canSelectIcon(P player);
+
 }
