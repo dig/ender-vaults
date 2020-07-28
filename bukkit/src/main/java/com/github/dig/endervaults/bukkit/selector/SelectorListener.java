@@ -10,6 +10,7 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
@@ -24,7 +25,7 @@ public class SelectorListener implements Listener {
 
     private final VaultRegistry registry = PluginProvider.getPlugin().getRegistry();
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         Inventory inventory = event.getClickedInventory();
@@ -61,7 +62,7 @@ public class SelectorListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onMove(InventoryMoveItemEvent event) {
         ItemStack item = event.getItem();
         if (item != null && item.getType() != Material.AIR) {
