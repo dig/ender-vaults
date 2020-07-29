@@ -57,7 +57,6 @@ public class YamlStorage implements DataStorage {
     @Override
     public Optional<Vault> load(UUID ownerUUID, UUID id) {
         if (!exists(ownerUUID, id)) return Optional.empty();
-
         VaultMetadataRegistry metadataRegistry = plugin.getMetadataRegistry();
         FileConfiguration configuration = YamlConfiguration.loadConfiguration(getVaultFile(ownerUUID, id));
 
