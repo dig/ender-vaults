@@ -54,7 +54,7 @@ public class PVXMigrator implements Migrator {
             if (ownerUUID != null) {
                 FileConfiguration configuration = YamlConfiguration.loadConfiguration(playerFile);
                 Set<String> vaultKeys = configuration.getKeys(false);
-                log.log(Level.INFO, "[EnderVaults] Migrating " + vaultKeys.size() + " vaults for player " + ownerUUID.toString() + ".");
+                log.log(Level.INFO, "[EnderVaults] Migrating " + vaultKeys.size() + " vaults for UUID " + ownerUUID.toString() + ".");
 
                 for (String vaultName : vaultKeys) {
                     String vaultOrderStr = vaultName.replaceFirst("vault", "");
@@ -84,6 +84,10 @@ public class PVXMigrator implements Migrator {
                     }
                 }
             }
+        }
+
+        if (directory.renameTo(new File(getDirectory().getParent(), "base64vaults-migrated"))) {
+            log.log(Level.INFO, "[EnderVaults] Moved 'base64vaults' to 'base64vaults-migrated' due to successful migration. You may now delete 'base64vaults-migrated'.");
         }
 
         long finish = System.currentTimeMillis();
