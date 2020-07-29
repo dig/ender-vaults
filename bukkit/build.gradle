@@ -16,6 +16,13 @@ dependencies {
     compile 'de.tr7zw:item-nbt-api:2.4.1'
 }
 
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        expand 'pluginVersion': project.ext.version
+        include 'plugin.yml'
+    }
+}
+
 shadowJar {
     archiveName = "EnderVaults-Bukkit-v${project.ext.version}.jar"
 
