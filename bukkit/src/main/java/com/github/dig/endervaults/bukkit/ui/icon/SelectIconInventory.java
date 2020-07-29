@@ -40,8 +40,8 @@ public class SelectIconInventory {
             try {
                 material = Material.valueOf(matName);
             } catch (IllegalArgumentException e) {
-                log.log(Level.SEVERE, "[EnderVaults] Unable to find material " + matName + ", using " + Material.STONE + " instead.", e);
-                material = Material.STONE;
+                log.log(Level.SEVERE, "[EnderVaults] Unable to find material " + matName + ", skipping...", e);
+                continue;
             }
 
             ItemStack item = new ItemStack(material, 1);
