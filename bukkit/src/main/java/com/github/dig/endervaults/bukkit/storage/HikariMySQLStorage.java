@@ -139,38 +139,13 @@ public class HikariMySQLStorage implements DataStorage {
     }
 
     private Vault create(UUID id, UUID ownerUUID, int size, String contents) {
-        Map<String, Object> metadata = getVaultMetadata(ownerUUID, id);
+        Map<String, Object> metadata = getMetadata(ownerUUID, id);
         String title = plugin.getLanguage().get(Lang.VAULT_TITLE, metadata);
         BukkitVault vault = new BukkitVault(id, title, size, ownerUUID, metadata);
 
         VaultSerializable serializable = vault;
         serializable.decode(contents);
         return vault;
-    }
-
-    private Map<String, Object> getVaultMetadata(UUID ownerUUID, UUID id) {
-        VaultMetadataRegistry metadataRegistry = plugin.getMetadataRegistry();
-
-        Map<String, Object> metadata = new HashMap<>();
-        String sql = String.format(DatabaseConstants.SQL_SELECT_VAULT_METADATA_BY_ID_AND_OWNER, metadataTable);
-        try (Connection conn = hikariDataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, id.toString());
-            stmt.setString(2, ownerUUID.toString());
-
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                String key = rs.getString("name");
-                Optional<MetadataConverter> converterOptional = metadataRegistry.get(key);
-                if (converterOptional.isPresent()) {
-                    MetadataConverter converter = converterOptional.get();
-                    metadata.put(key, converter.to(rs.getString("value")));
-                }
-            }
-        } catch (SQLException ex) {
-            log.log(Level.SEVERE, "[EnderVaults] Error while executing query.", ex);
-        }
-
-        return metadata;
     }
 
     private void insert(UUID id, UUID ownerUUID, int size, String contents) {
@@ -264,6 +239,31 @@ public class HikariMySQLStorage implements DataStorage {
             log.log(Level.SEVERE, "[EnderVaults] Error while executing query.", ex);
         }
         return vaults;
+    }
+
+    private Map<String, Object> getMetadata(UUID ownerUUID, UUID id) {
+        VaultMetadataRegistry metadataRegistry = plugin.getMetadataRegistry();
+
+        Map<String, Object> metadata = new HashMap<>();
+        String sql = String.format(DatabaseConstants.SQL_SELECT_VAULT_METADATA_BY_ID_AND_OWNER, metadataTable);
+        try (Connection conn = hikariDataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, id.toString());
+            stmt.setString(2, ownerUUID.toString());
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String key = rs.getString("name");
+                Optional<MetadataConverter> converterOptional = metadataRegistry.get(key);
+                if (converterOptional.isPresent()) {
+                    MetadataConverter converter = converterOptional.get();
+                    metadata.put(key, converter.to(rs.getString("value")));
+                }
+            }
+        } catch (SQLException ex) {
+            log.log(Level.SEVERE, "[EnderVaults] Error while executing query.", ex);
+        }
+
+        return metadata;
     }
 
     private boolean exists(UUID id, UUID ownerUUID, String key) {
