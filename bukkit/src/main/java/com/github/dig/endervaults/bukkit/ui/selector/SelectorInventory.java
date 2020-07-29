@@ -129,7 +129,7 @@ public class SelectorInventory {
         }
 
         ItemStack item = new ItemStack(material, 1);
-        if (useLegacyMaterials && data > 0) {
+        if (useLegacyMaterials && data > 0 && icon == null) {
             item.setDurability((byte) data);
         }
 
