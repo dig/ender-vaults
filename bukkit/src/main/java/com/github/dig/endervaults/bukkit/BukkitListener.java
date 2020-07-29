@@ -96,8 +96,12 @@ public class BukkitListener implements Listener {
         Block block = event.getClickedBlock();
 
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == Material.ENDER_CHEST && isEnderchestReplaced()) {
-            new SelectorInventory(player.getUniqueId(), 1).launchFor(player);
             event.setCancelled(true);
+            if (!persister.isLoaded(player.getUniqueId())) {
+                player.sendMessage(plugin.getLanguage().get(Lang.PLAYER_NOT_LOADED));
+                return;
+            }
+            new SelectorInventory(player.getUniqueId(), 1).launchFor(player);
         }
     }
 
