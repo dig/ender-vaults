@@ -17,7 +17,7 @@ import com.github.dig.endervaults.bukkit.permission.BukkitUserPermission;
 import com.github.dig.endervaults.bukkit.ui.icon.SelectIconListener;
 import com.github.dig.endervaults.bukkit.ui.selector.SelectorListener;
 import com.github.dig.endervaults.bukkit.storage.YamlStorage;
-import com.github.dig.endervaults.bukkit.storage.HikariMySQLStorage;
+import com.github.dig.endervaults.bukkit.storage.HikariStorage;
 import com.github.dig.endervaults.bukkit.vault.BukkitVaultAutoSave;
 import com.github.dig.endervaults.bukkit.vault.BukkitVaultPersister;
 import com.github.dig.endervaults.bukkit.vault.metadata.BukkitVaultMetadataRegistry;
@@ -201,13 +201,14 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
             case FLATFILE:
                 dataStorage = new YamlStorage();
                 break;
+            case MARIADB:
             case MYSQL:
-                dataStorage = new HikariMySQLStorage();
+                dataStorage = new HikariStorage();
                 break;
         }
 
         log.log(Level.INFO, "[EnderVaults] Using data storage: " + storage.toString() + ".");
-        if (!dataStorage.init()) {
+        if (!dataStorage.init(storage)) {
             log.log(Level.SEVERE, "[EnderVaults] Error with data storage, disabling...");
             Bukkit.getPluginManager().disablePlugin(this);
             return false;

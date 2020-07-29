@@ -113,15 +113,19 @@ storage:
 
   # All the different settings for the storage methods.
   settings:
+
+    # Flat file settings
     flatfile:
       # Possible file formats:
       #   - YAML
       type: YAML
       # Where the data will be saved
       directory: 'data'
+
+    # MySQL settings
     mysql:
       # Address and port. Can specify as "host:port" or "host".
-      # Default port for MySQL and MariaDB is 3306.
+      # Default port for MySQL is 3306.
       address: 'localhost'
 
       # Database to create tables in
@@ -139,6 +143,30 @@ storage:
         prepStmtCacheSqlLimit: '2048'
         useSSL: 'true'
         verifyServerCertificate: 'true'
+
+      # Table names
+      tables:
+        vault: 'endervaults_vault'
+        vault-metadata: 'endervaults_vault_metadata'
+
+    # MariaDB settings
+    mariadb:
+      # Address and port. Can specify as "host:port" or "host".
+      # Default port for MariaDB is 3306.
+      address: 'localhost'
+
+      # Database to create tables in
+      database: 'minecraft'
+
+      # Credentials
+      user: 'minecraft'
+      password: '123'
+
+      # Connection properties
+      properties:
+        cachePrepStmts: 'true'
+        prepStmtCacheSize: '250'
+        prepStmtCacheSqlLimit: '2048'
 
       # Table names
       tables:

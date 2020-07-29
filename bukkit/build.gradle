@@ -12,6 +12,7 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT'
     compileOnly 'org.bukkit:craftbukkit:1.16.1-R0.1-SNAPSHOT'
     compile 'com.zaxxer:HikariCP:3.4.5'
+    compile 'org.mariadb.jdbc:mariadb-java-client:2.6.2'
     compile 'de.tr7zw:item-nbt-api:2.4.1'
 }
 
@@ -20,5 +21,6 @@ shadowJar {
 
     relocate 'de.tr7zw.changeme.nbtapi', 'com.github.dig.endervaults.lib.nbt'
     relocate 'com.zaxxer.hikari', 'com.github.dig.endervaults.lib.hikari'
+    relocate 'org.mariadb.jdbc', 'com.github.dig.endervaults.lib.mariadb'
     relocate 'org.javatuples', 'com.github.dig.endervaults.lib.javatuples'
 }

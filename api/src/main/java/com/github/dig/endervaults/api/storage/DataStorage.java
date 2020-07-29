@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface DataStorage {
 
-    boolean init();
+    boolean init(Storage storage);
 
     void close();
 

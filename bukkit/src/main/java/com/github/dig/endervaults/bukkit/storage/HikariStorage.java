@@ -3,6 +3,7 @@ package com.github.dig.endervaults.bukkit.storage;
 import com.github.dig.endervaults.api.PluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;
 import com.github.dig.endervaults.api.storage.DataStorage;
+import com.github.dig.endervaults.api.storage.Storage;
 import com.github.dig.endervaults.api.util.VaultSerializable;
 import com.github.dig.endervaults.api.vault.Vault;
 import com.github.dig.endervaults.api.vault.metadata.MetadataConverter;
@@ -24,7 +25,7 @@ import java.util.*;
 import java.util.logging.Level;
 
 @Log
-public class HikariMySQLStorage implements DataStorage {
+public class HikariStorage implements DataStorage {
 
     private final EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
 
@@ -33,9 +34,9 @@ public class HikariMySQLStorage implements DataStorage {
     private String metadataTable;
 
     @Override
-    public boolean init() {
+    public boolean init(Storage storage) {
         FileConfiguration config = (FileConfiguration) plugin.getConfigFile().getConfiguration();
-        ConfigurationSection settings = config.getConfigurationSection("storage.settings.mysql");
+        ConfigurationSection settings = config.getConfigurationSection(storage == Storage.MYSQL ? "storage.settings.mysql" : "storage.settings.mariadb");
 
         String address = settings.getString("address", "localhost");
         String database = settings.getString("database", "minecraft");
@@ -43,10 +44,15 @@ public class HikariMySQLStorage implements DataStorage {
         String password = settings.getString("password", "123");
 
         HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl(String.format("jdbc:mysql://%s/%s", address, database));
+        hikariConfig.setJdbcUrl(String.format("jdbc:%s://%s/%s", storage == Storage.MYSQL ? "mysql" : "mariadb", address, database));
 
         hikariConfig.setUsername(user);
         hikariConfig.setPassword(password);
+
+        if (storage == Storage.MARIADB) {
+            hikariConfig.setDriverClassName("org.mariadb.jdbc.Driver");
+            hikariConfig.setAutoCommit(false);
+        }
 
         ConfigurationSection properties = settings.getConfigurationSection("properties");
         for (String key : properties.getKeys(false)) {
