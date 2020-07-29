@@ -44,6 +44,13 @@ public class BukkitVault implements Vault, VaultSerializable {
         this.metadata = metadata;
     }
 
+    public BukkitVault(UUID id, UUID ownerUUID, Inventory inventory, Map<String, Object> metadata) {
+        this.id = id;
+        this.ownerUUID = ownerUUID;
+        this.inventory = inventory;
+        this.metadata = metadata;
+    }
+
     @Override
     public UUID getId() {
         return id;

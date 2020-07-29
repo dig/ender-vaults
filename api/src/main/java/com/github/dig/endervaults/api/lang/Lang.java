@@ -13,7 +13,8 @@ public enum Lang {
     NO_PERMISSION("no-permission"),
     CONFIG_RELOAD("config-reload"),
     BLACKLISTED_ITEM("blacklisted-item"),
-    PLAYER_NOT_FOUND("player-not-found");
+    PLAYER_NOT_FOUND("player-not-found"),
+    ONLY_FROM_CONSOLE("only-from-console");
 
     @Getter
     private String key;
