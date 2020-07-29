@@ -51,7 +51,6 @@ public class HikariStorage implements DataStorage {
 
         if (storage == Storage.MARIADB) {
             hikariConfig.setDriverClassName("org.mariadb.jdbc.Driver");
-            hikariConfig.setAutoCommit(false);
         }
 
         ConfigurationSection properties = settings.getConfigurationSection("properties");
