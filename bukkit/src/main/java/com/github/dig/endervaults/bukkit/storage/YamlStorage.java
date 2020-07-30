@@ -1,6 +1,6 @@
 package com.github.dig.endervaults.bukkit.storage;
 
-import com.github.dig.endervaults.api.PluginProvider;
+import com.github.dig.endervaults.api.VaultPluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;
 import com.github.dig.endervaults.api.storage.DataStorage;
 import com.github.dig.endervaults.api.storage.Storage;
@@ -18,12 +18,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Level;
 
 @Log
 public class YamlStorage implements DataStorage {
 
-    private final EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
+    private final EVBukkitPlugin plugin = (EVBukkitPlugin) VaultPluginProvider.getPlugin();
 
     @Override
     public boolean init(Storage storage) {

@@ -1,6 +1,6 @@
 package com.github.dig.endervaults.bukkit.storage;
 
-import com.github.dig.endervaults.api.PluginProvider;
+import com.github.dig.endervaults.api.VaultPluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;
 import com.github.dig.endervaults.api.storage.DataStorage;
 import com.github.dig.endervaults.api.storage.Storage;
@@ -27,7 +27,7 @@ import java.util.logging.Level;
 @Log
 public class HikariStorage implements DataStorage {
 
-    private final EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
+    private final EVBukkitPlugin plugin = (EVBukkitPlugin) VaultPluginProvider.getPlugin();
 
     private HikariDataSource hikariDataSource;
     private String vaultTable;

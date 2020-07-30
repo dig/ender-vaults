@@ -1,6 +1,6 @@
 package com.github.dig.endervaults.bukkit.vault;
 
-import com.github.dig.endervaults.api.PluginProvider;
+import com.github.dig.endervaults.api.VaultPluginProvider;
 import com.github.dig.endervaults.api.storage.DataStorage;
 import com.github.dig.endervaults.api.vault.VaultRegistry;
 import lombok.extern.java.Log;
@@ -11,8 +11,8 @@ import java.util.logging.Level;
 @Log
 public class BukkitVaultAutoSave implements Runnable {
 
-    private final VaultRegistry registry = PluginProvider.getPlugin().getRegistry();
-    private final DataStorage dataStorage = PluginProvider.getPlugin().getDataStorage();
+    private final VaultRegistry registry = VaultPluginProvider.getPlugin().getRegistry();
+    private final DataStorage dataStorage = VaultPluginProvider.getPlugin().getDataStorage();
 
     @Override
     public void run() {

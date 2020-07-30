@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class PluginProvider {
+public class VaultPluginProvider {
 
     @Getter
     private static EnderVaultsPlugin plugin = null;

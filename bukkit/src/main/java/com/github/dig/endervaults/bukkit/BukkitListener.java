@@ -1,6 +1,6 @@
 package com.github.dig.endervaults.bukkit;
 
-import com.github.dig.endervaults.api.PluginProvider;
+import com.github.dig.endervaults.api.VaultPluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;
 import com.github.dig.endervaults.api.permission.UserPermission;
 import com.github.dig.endervaults.api.vault.VaultPersister;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 public class BukkitListener implements Listener {
 
-    private final EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
+    private final EVBukkitPlugin plugin = (EVBukkitPlugin) VaultPluginProvider.getPlugin();
     private final VaultPersister persister = plugin.getPersister();
     private final UserPermission<Player> permission = plugin.getPermission();
 

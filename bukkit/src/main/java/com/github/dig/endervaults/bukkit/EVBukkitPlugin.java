@@ -1,7 +1,7 @@
 package com.github.dig.endervaults.bukkit;
 
 import com.github.dig.endervaults.api.EnderVaultsPlugin;
-import com.github.dig.endervaults.api.PluginProvider;
+import com.github.dig.endervaults.api.VaultPluginProvider;
 import com.github.dig.endervaults.api.exception.PluginAlreadySetException;
 import com.github.dig.endervaults.api.file.DataFile;
 import com.github.dig.endervaults.api.lang.Language;
@@ -140,7 +140,7 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
 
     private boolean setProviders() {
         try {
-            PluginProvider.set(this);
+            VaultPluginProvider.set(this);
             setNMSProvider();
             return true;
         } catch (PluginAlreadySetException | InvalidMinecraftVersionException e) {

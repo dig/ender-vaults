@@ -1,9 +1,8 @@
 package com.github.dig.endervaults.bukkit.ui.icon;
 
-import com.github.dig.endervaults.api.PluginProvider;
+import com.github.dig.endervaults.api.VaultPluginProvider;
 import com.github.dig.endervaults.api.vault.VaultRegistry;
 import com.github.dig.endervaults.api.vault.metadata.VaultDefaultMetadata;
-import com.github.dig.endervaults.bukkit.ui.selector.SelectorConstants;
 import com.github.dig.endervaults.bukkit.ui.selector.SelectorInventory;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Material;
@@ -20,7 +19,7 @@ import java.util.UUID;
 
 public class SelectIconListener implements Listener {
 
-    private final VaultRegistry registry = PluginProvider.getPlugin().getRegistry();
+    private final VaultRegistry registry = VaultPluginProvider.getPlugin().getRegistry();
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onClick(InventoryClickEvent event) {

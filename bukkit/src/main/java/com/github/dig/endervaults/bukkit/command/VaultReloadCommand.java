@@ -1,6 +1,6 @@
 package com.github.dig.endervaults.bukkit.command;
 
-import com.github.dig.endervaults.api.PluginProvider;
+import com.github.dig.endervaults.api.VaultPluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;
 import com.github.dig.endervaults.api.lang.Language;
 import com.github.dig.endervaults.api.permission.UserPermission;
@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 public class VaultReloadCommand implements CommandExecutor {
 
-    private final EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
+    private final EVBukkitPlugin plugin = (EVBukkitPlugin) VaultPluginProvider.getPlugin();
     private final Language language = plugin.getLanguage();
     private final UserPermission<Player> permission = plugin.getPermission();
 

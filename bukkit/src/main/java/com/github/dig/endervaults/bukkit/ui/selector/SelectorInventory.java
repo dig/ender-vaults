@@ -1,6 +1,6 @@
 package com.github.dig.endervaults.bukkit.ui.selector;
 
-import com.github.dig.endervaults.api.PluginProvider;
+import com.github.dig.endervaults.api.VaultPluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;
 import com.github.dig.endervaults.api.permission.UserPermission;
 import com.github.dig.endervaults.api.selector.SelectorMode;
@@ -13,7 +13,6 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import lombok.extern.java.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -30,7 +29,7 @@ import java.util.stream.Collectors;
 @Log
 public class SelectorInventory {
 
-    private final EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
+    private final EVBukkitPlugin plugin = (EVBukkitPlugin) VaultPluginProvider.getPlugin();
     private final VaultRegistry registry = plugin.getRegistry();
     private final UserPermission<Player> permission = plugin.getPermission();
     private final MinecraftVersion version = plugin.getVersion();

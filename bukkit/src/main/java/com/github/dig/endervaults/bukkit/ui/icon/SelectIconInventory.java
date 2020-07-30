@@ -1,6 +1,6 @@
 package com.github.dig.endervaults.bukkit.ui.icon;
 
-import com.github.dig.endervaults.api.PluginProvider;
+import com.github.dig.endervaults.api.VaultPluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;
 import com.github.dig.endervaults.api.vault.Vault;
 import com.github.dig.endervaults.bukkit.EVBukkitPlugin;
@@ -18,7 +18,7 @@ import java.util.logging.Level;
 @Log
 public class SelectIconInventory {
 
-    private final EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
+    private final EVBukkitPlugin plugin = (EVBukkitPlugin) VaultPluginProvider.getPlugin();
     private final FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
 
     private final Vault vault;

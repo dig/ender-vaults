@@ -1,6 +1,6 @@
 package com.github.dig.endervaults.bukkit.ui.selector;
 
-import com.github.dig.endervaults.api.PluginProvider;
+import com.github.dig.endervaults.api.VaultPluginProvider;
 import com.github.dig.endervaults.api.permission.UserPermission;
 import com.github.dig.endervaults.api.vault.Vault;
 import com.github.dig.endervaults.api.vault.VaultRegistry;
@@ -27,9 +27,9 @@ import java.util.UUID;
 
 public class SelectorListener implements Listener {
 
-    private final VaultRegistry registry = PluginProvider.getPlugin().getRegistry();
-    private final UserPermission permission = PluginProvider.getPlugin().getPermission();
-    private final FileConfiguration configuration = (FileConfiguration) PluginProvider.getPlugin().getConfigFile().getConfiguration();
+    private final VaultRegistry registry = VaultPluginProvider.getPlugin().getRegistry();
+    private final UserPermission permission = VaultPluginProvider.getPlugin().getPermission();
+    private final FileConfiguration configuration = (FileConfiguration) VaultPluginProvider.getPlugin().getConfigFile().getConfiguration();
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onClick(InventoryClickEvent event) {

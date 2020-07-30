@@ -1,6 +1,6 @@
 package com.github.dig.endervaults.bukkit.file;
 
-import com.github.dig.endervaults.api.PluginProvider;
+import com.github.dig.endervaults.api.VaultPluginProvider;
 import com.github.dig.endervaults.api.file.DataFile;
 import com.github.dig.endervaults.bukkit.EVBukkitPlugin;
 import com.google.common.io.ByteStreams;
@@ -36,7 +36,7 @@ public class BukkitDataFile implements DataFile<FileConfiguration> {
     public void load() {
         try {
             if (!file.exists()) {
-                EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
+                EVBukkitPlugin plugin = (EVBukkitPlugin) VaultPluginProvider.getPlugin();
                 plugin.getDataFolder().mkdirs();
 
                 try (InputStream is = plugin.getResource(file.getName());

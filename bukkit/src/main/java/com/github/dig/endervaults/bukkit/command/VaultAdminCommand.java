@@ -1,7 +1,7 @@
 package com.github.dig.endervaults.bukkit.command;
 
 import com.github.dig.endervaults.api.EnderVaultsPlugin;
-import com.github.dig.endervaults.api.PluginProvider;
+import com.github.dig.endervaults.api.VaultPluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;
 import com.github.dig.endervaults.api.lang.Language;
 import com.github.dig.endervaults.api.permission.UserPermission;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 public class VaultAdminCommand implements CommandExecutor {
 
-    private final EnderVaultsPlugin plugin = PluginProvider.getPlugin();
+    private final EnderVaultsPlugin plugin = VaultPluginProvider.getPlugin();
     private final Language language = plugin.getLanguage();
     private final UserPermission<Player> permission = plugin.getPermission();
 

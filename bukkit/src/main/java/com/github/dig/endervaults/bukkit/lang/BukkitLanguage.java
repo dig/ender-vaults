@@ -1,6 +1,6 @@
 package com.github.dig.endervaults.bukkit.lang;
 
-import com.github.dig.endervaults.api.PluginProvider;
+import com.github.dig.endervaults.api.VaultPluginProvider;
 import com.github.dig.endervaults.api.exception.LanguageMissingException;
 import com.github.dig.endervaults.api.file.DataFile;
 import com.github.dig.endervaults.api.lang.Lang;
@@ -15,7 +15,7 @@ import java.util.logging.Level;
 @Log
 public class BukkitLanguage implements Language {
 
-    private final DataFile langFile = PluginProvider.getPlugin().getLangFile();
+    private final DataFile langFile = VaultPluginProvider.getPlugin().getLangFile();
 
     @Override
     public String get(Lang lang) {

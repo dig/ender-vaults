@@ -1,6 +1,6 @@
 package com.github.dig.endervaults.bukkit.migration;
 
-import com.github.dig.endervaults.api.PluginProvider;
+import com.github.dig.endervaults.api.VaultPluginProvider;
 import com.github.dig.endervaults.api.migration.Migrator;
 import com.github.dig.endervaults.api.storage.DataStorage;
 import com.github.dig.endervaults.api.vault.metadata.VaultDefaultMetadata;
@@ -25,7 +25,7 @@ import java.util.logging.Level;
 @Log
 public class PVXMigrator implements Migrator {
 
-    private final EVBukkitPlugin plugin = (EVBukkitPlugin) PluginProvider.getPlugin();
+    private final EVBukkitPlugin plugin = (EVBukkitPlugin) VaultPluginProvider.getPlugin();
     private final DataStorage dataStorage = plugin.getDataStorage();
 
     @Override

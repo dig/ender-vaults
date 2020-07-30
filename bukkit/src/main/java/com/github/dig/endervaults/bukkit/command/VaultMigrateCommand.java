@@ -1,7 +1,7 @@
 package com.github.dig.endervaults.bukkit.command;
 
 import com.github.dig.endervaults.api.EnderVaultsPlugin;
-import com.github.dig.endervaults.api.PluginProvider;
+import com.github.dig.endervaults.api.VaultPluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;
 import com.github.dig.endervaults.api.migration.Migrator;
 import com.github.dig.endervaults.bukkit.migration.MigrationPlugins;
@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public class VaultMigrateCommand implements CommandExecutor {
 
-    private final EnderVaultsPlugin plugin = PluginProvider.getPlugin();
+    private final EnderVaultsPlugin plugin = VaultPluginProvider.getPlugin();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

@@ -1,7 +1,7 @@
 package com.github.dig.endervaults.bukkit.vault;
 
 import com.github.dig.endervaults.api.EnderVaultsPlugin;
-import com.github.dig.endervaults.api.PluginProvider;
+import com.github.dig.endervaults.api.VaultPluginProvider;
 import com.github.dig.endervaults.nms.NMSProvider;
 import com.github.dig.endervaults.nms.VaultNMS;
 import com.github.dig.endervaults.api.util.VaultSerializable;
@@ -162,7 +162,7 @@ public class BukkitVault implements Vault, VaultSerializable {
     }
 
     private Class<?> getCraftItemStackClass() throws ClassNotFoundException {
-        EnderVaultsPlugin plugin = PluginProvider.getPlugin();
+        EnderVaultsPlugin plugin = VaultPluginProvider.getPlugin();
         return Class.forName("org.bukkit.craftbukkit." + plugin.getVersion().toString() + ".inventory.CraftItemStack");
     }
 }
