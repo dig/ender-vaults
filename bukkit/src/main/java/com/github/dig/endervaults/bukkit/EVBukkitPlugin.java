@@ -38,6 +38,7 @@ import com.github.dig.endervaults.nms.v1_14_R1.v1_14_R1NMS;
 import com.github.dig.endervaults.nms.v1_8_R3.v1_8_R3NMS;
 import lombok.extern.java.Log;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -45,6 +46,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import javax.annotation.Nullable;
 import java.io.File;
+import java.util.Arrays;
 import java.util.logging.Level;
 
 @Log
@@ -115,6 +117,8 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
 
     @Override
     public void onEnable() {
+        showStartUpMessage();
+
         if (!setProviders()) return;
         loadConfiguration();
         if (!setupDataStorage()) return;
@@ -248,5 +252,17 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
         getServer().getPluginManager().registerEvents(new BukkitListener(), this);
         getServer().getPluginManager().registerEvents(new SelectorListener(), this);
         getServer().getPluginManager().registerEvents(new SelectIconListener(), this);
+    }
+
+    private void showStartUpMessage() {
+        Arrays.asList(
+                " ",
+                "  &5EnderVaults &dv" + getDescription().getVersion(),
+                "  &8Initializing...",
+                " "
+        )
+                .stream()
+                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                .forEach(s -> getServer().getConsoleSender().sendMessage(s));
     }
 }
