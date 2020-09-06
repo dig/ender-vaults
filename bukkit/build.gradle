@@ -13,7 +13,7 @@ dependencies {
     compileOnly 'org.bukkit:craftbukkit:1.16.1-R0.1-SNAPSHOT'
     compile 'com.zaxxer:HikariCP:3.4.5'
     compile 'org.mariadb.jdbc:mariadb-java-client:2.6.2'
-    compile 'de.tr7zw:item-nbt-api:2.4.1'
+    compile 'de.tr7zw:item-nbt-api:2.5.0'
 }
 
 processResources {

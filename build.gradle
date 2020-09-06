@@ -22,7 +22,7 @@ subprojects {
     copyToBuildsDir.dependsOn(jar)
     build.finalizedBy(copyToBuildsDir)
 
-    project.ext.version = '1.0.4'
+    project.ext.version = '1.0.5'
 
     repositories {
         mavenLocal()
