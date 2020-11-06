@@ -16,4 +16,6 @@ public interface UserPermission<P> {
 
     boolean canSelectIcon(P player);
 
+    boolean isAdminImmune(P player);
+
 }

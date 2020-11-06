@@ -45,4 +45,9 @@ public class BukkitUserPermission implements UserPermission<Player> {
     public boolean canSelectIcon(Player player) {
         return player.hasPermission("endervaults.select.icon");
     }
+
+    @Override
+    public boolean isAdminImmune(Player player) {
+        return player.hasPermission("endervaults.admin.immune");
+    }
 }

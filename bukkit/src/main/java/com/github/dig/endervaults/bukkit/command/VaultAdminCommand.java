@@ -37,6 +37,11 @@ public class VaultAdminCommand implements CommandExecutor {
                         return true;
                     }
 
+                    if (permission.isAdminImmune(target)) {
+                        sender.sendMessage(language.get(Lang.NO_PERMISSION));
+                        return true;
+                    }
+
                     String title = language.get(Lang.ADMIN_VAULT_SELECTOR_TITLE, new HashMap<String, Object>(){{
                         put("player", target.getName());
                     }});
@@ -45,6 +50,11 @@ public class VaultAdminCommand implements CommandExecutor {
                     Player target = Bukkit.getPlayer(args[0]);
                     if (target == null) {
                         sender.sendMessage(language.get(Lang.PLAYER_NOT_FOUND));
+                        return true;
+                    }
+
+                    if (permission.isAdminImmune(target)) {
+                        sender.sendMessage(language.get(Lang.NO_PERMISSION));
                         return true;
                     }
 
