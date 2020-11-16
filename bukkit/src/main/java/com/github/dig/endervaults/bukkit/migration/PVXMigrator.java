@@ -50,7 +50,14 @@ public class PVXMigrator implements Migrator {
         log.log(Level.INFO, "[EnderVaults] Found " + files.length + " player files with vaults.");
 
         for (File playerFile : files) {
-            UUID ownerUUID = UUID.fromString(Files.getNameWithoutExtension(playerFile.getName()));
+            UUID ownerUUID;
+            try {
+                ownerUUID = UUID.fromString(Files.getNameWithoutExtension(playerFile.getName()));
+            } catch (IllegalArgumentException e) {
+                log.log(Level.SEVERE, "[EnderVaults] Skipping vault, not a valid UUID. (" + playerFile.getName() + ")", e);
+                continue;
+            }
+
             if (ownerUUID != null) {
                 FileConfiguration configuration = YamlConfiguration.loadConfiguration(playerFile);
                 Set<String> vaultKeys = configuration.getKeys(false);
@@ -62,7 +69,7 @@ public class PVXMigrator implements Migrator {
                     try {
                         order = Integer.parseInt(vaultOrderStr);
                     } catch (NumberFormatException e) {
-                        log.log(Level.SEVERE, "[EnderVaults] Error while migrating vault, could not find vault order. (" + ownerUUID.toString() + ", " + vaultName + ")", e);
+                        log.log(Level.SEVERE, "[EnderVaults] Skipping vault, could not find order. (" + ownerUUID.toString() + ", " + vaultName + ")", e);
                         continue;
                     }
 
