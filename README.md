@@ -1,4 +1,7 @@
 # ender-vaults
+
+[![](https://img.shields.io/github/license/dig/ender-vaults.svg)](LICENSE)
+
 EnderVaults is a player vault plugin for Spigot / Bukkit.
 
 ## Features
