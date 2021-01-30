@@ -30,8 +30,7 @@ public class PVXMigrator implements Migrator {
 
     @Override
     public boolean can() {
-        File directory = getDirectory();
-        return directory.exists() && directory.isDirectory();
+        return getDirectory().exists() && getDirectory().isDirectory();
     }
 
     @Override

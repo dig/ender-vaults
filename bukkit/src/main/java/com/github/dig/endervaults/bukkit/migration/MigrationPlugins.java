@@ -6,12 +6,15 @@ import java.util.Optional;
 
 public enum MigrationPlugins {
 
-    PLAYERVAULTSX;
+    PLAYERVAULTSX,
+    ENDERCONTAINERS;
 
     public Optional<Migrator> get() {
         switch (this) {
             case PLAYERVAULTSX:
                 return Optional.of(new PVXMigrator());
+            case ENDERCONTAINERS:
+                return Optional.of(new ECMigrator());
         }
         return Optional.empty();
     }
