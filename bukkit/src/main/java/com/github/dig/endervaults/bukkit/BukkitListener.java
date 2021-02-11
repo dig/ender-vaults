@@ -23,8 +23,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class BukkitListener implements Listener {
@@ -33,16 +37,24 @@ public class BukkitListener implements Listener {
     private final VaultPersister persister = plugin.getPersister();
     private final UserPermission<Player> permission = plugin.getPermission();
 
+    private final Map<UUID, BukkitTask> pendingLoadMap = new HashMap<>();
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin,
-                () -> persister.load(event.getPlayer().getUniqueId()));
+        Player player = event.getPlayer();
+        BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLaterAsynchronously(plugin,
+                () -> persister.load(player.getUniqueId()), 5 * 20);
+        pendingLoadMap.put(player.getUniqueId(), bukkitTask);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        if (pendingLoadMap.containsKey(player.getUniqueId())) {
+            pendingLoadMap.remove(player.getUniqueId()).cancel();
+        }
         Bukkit.getScheduler().runTaskAsynchronously(plugin,
-                () -> persister.save(event.getPlayer().getUniqueId()));
+                () -> persister.save(player.getUniqueId()));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
