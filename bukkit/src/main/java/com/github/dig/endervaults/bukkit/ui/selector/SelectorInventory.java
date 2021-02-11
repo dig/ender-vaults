@@ -43,25 +43,22 @@ public class SelectorInventory {
     public SelectorInventory(UUID ownerUUID, int page) {
         FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
         int size = configuration.getInt("selector.rows", 6) * 9;
-        String title = plugin.getLanguage().get(Lang.VAULT_SELECTOR_TITLE);
-
         this.ownerUUID = ownerUUID;
         this.page = page;
-        this.mode = SelectorMode.valueOf(configuration.getString("selector.design-mode", SelectorMode.PANE_BY_FILL.toString()));
-        this.inventory = Bukkit.createInventory(null, size, title);
-
+        this.mode = SelectorMode.valueOf(
+                configuration.getString("selector.design-mode", SelectorMode.PANE_BY_FILL.toString()));
+        this.inventory = Bukkit.createInventory(null, size,
+                plugin.getLanguage().get(Lang.VAULT_SELECTOR_TITLE));
         init();
     }
 
     public SelectorInventory(UUID ownerUUID, int page, String title) {
         FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
         int size = configuration.getInt("selector.rows", 6) * 9;
-
         this.ownerUUID = ownerUUID;
         this.page = page;
         this.mode = SelectorMode.valueOf(configuration.getString("selector.design-mode", SelectorMode.PANE_BY_FILL.toString()));
         this.inventory = Bukkit.createInventory(null, size, title);
-
         init();
     }
 

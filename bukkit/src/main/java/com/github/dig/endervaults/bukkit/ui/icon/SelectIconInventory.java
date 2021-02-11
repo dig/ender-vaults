@@ -26,11 +26,9 @@ public class SelectIconInventory {
 
     public SelectIconInventory(Vault vault) {
         int size = configuration.getInt("selector.select-icon.rows", 3) * 9;
-        String title = plugin.getLanguage().get(Lang.VAULT_SELECT_ICON_TITLE);
-
         this.vault = vault;
-        this.inventory = Bukkit.createInventory(null, size, title);
-
+        this.inventory = Bukkit.createInventory(null, size,
+                plugin.getLanguage().get(Lang.VAULT_SELECT_ICON_TITLE));
         init();
     }
 
