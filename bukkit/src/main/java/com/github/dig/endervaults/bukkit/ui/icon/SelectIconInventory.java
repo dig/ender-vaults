@@ -11,7 +11,9 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.logging.Level;
 
@@ -43,6 +45,14 @@ public class SelectIconInventory {
             }
 
             ItemStack item = new ItemStack(material, 1);
+            ItemMeta meta = item.getItemMeta();
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES,
+                    ItemFlag.HIDE_UNBREAKABLE,
+                    ItemFlag.HIDE_ENCHANTS,
+                    ItemFlag.HIDE_DESTROYS,
+                    ItemFlag.HIDE_POTION_EFFECTS,
+                    ItemFlag.HIDE_PLACED_ON);
+            item.setItemMeta(meta);
 
             NBTItem nbtItem = new NBTItem(item);
             nbtItem.setBoolean(SelectIconConstants.NBT_ICON_ITEM, true);
