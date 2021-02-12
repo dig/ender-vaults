@@ -17,6 +17,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -140,6 +141,12 @@ public class SelectorInventory {
                 .map(s -> s.replaceAll("%free_slots", String.valueOf(free)))
                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                 .collect(Collectors.toList()));
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES,
+                ItemFlag.HIDE_UNBREAKABLE,
+                ItemFlag.HIDE_ENCHANTS,
+                ItemFlag.HIDE_DESTROYS,
+                ItemFlag.HIDE_POTION_EFFECTS,
+                ItemFlag.HIDE_PLACED_ON);
         item.setItemMeta(meta);
 
         NBTItem nbtItem = new NBTItem(item);
@@ -208,6 +215,12 @@ public class SelectorInventory {
                         .stream()
                         .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                         .collect(Collectors.toList()));
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES,
+                ItemFlag.HIDE_UNBREAKABLE,
+                ItemFlag.HIDE_ENCHANTS,
+                ItemFlag.HIDE_DESTROYS,
+                ItemFlag.HIDE_POTION_EFFECTS,
+                ItemFlag.HIDE_PLACED_ON);
         item.setItemMeta(meta);
 
         NBTItem nbtItem = new NBTItem(item);
