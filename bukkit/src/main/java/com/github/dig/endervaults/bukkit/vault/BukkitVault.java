@@ -6,6 +6,7 @@ import com.github.dig.endervaults.nms.NMSProvider;
 import com.github.dig.endervaults.nms.VaultNMS;
 import com.github.dig.endervaults.api.util.VaultSerializable;
 import com.github.dig.endervaults.api.vault.Vault;
+import lombok.Getter;
 import lombok.extern.java.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -25,18 +26,18 @@ import java.util.logging.Level;
 @Log
 public class BukkitVault implements Vault, VaultSerializable {
 
+    private final VaultNMS nmsBridge = NMSProvider.getBridge();
+
     private UUID id;
     private UUID ownerUUID;
+    @Getter
     private Inventory inventory;
-    private Map<String, Object> metadata;
-
-    private final VaultNMS nmsBridge = NMSProvider.getBridge();
+    private Map<String, Object> metadata = new HashMap<>();
 
     public BukkitVault(UUID id, String title, int size, UUID ownerUUID) {
         this.id = id;
         this.ownerUUID = ownerUUID;
-        this.inventory = Bukkit.createInventory(null, size, title);
-        this.metadata = new HashMap<>();
+        this.inventory = Bukkit.createInventory(new BukkitInventoryHolder(this), size, title);
     }
 
     public BukkitVault(UUID id, String title, int size, UUID ownerUUID, Map<String, Object> metadata) {
