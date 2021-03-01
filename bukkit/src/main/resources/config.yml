@@ -122,6 +122,13 @@ storage:
   # All the different settings for the storage methods.
   settings:
 
+    # Amount of ticks to wait before
+    # loading vaults, I recommend you use
+    # 100 (5 seconds). You can set to 0, if
+    # you do not use the plugin across
+    # servers on the same database.
+    load-delay: 100
+
     # Flat file settings
     flatfile:
       # Possible file formats:

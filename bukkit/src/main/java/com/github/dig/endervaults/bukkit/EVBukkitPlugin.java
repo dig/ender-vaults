@@ -52,8 +52,8 @@ import java.util.logging.Level;
 @Log
 public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
 
-    private DataFile langFile;
-    private DataFile configFile;
+    private DataFile<FileConfiguration> langFile;
+    private DataFile<FileConfiguration> configFile;
 
     private VaultRegistry registry;
     private Language language;
@@ -76,12 +76,12 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
     }
 
     @Override
-    public DataFile getLangFile() {
+    public DataFile<FileConfiguration> getLangFile() {
         return langFile;
     }
 
     @Override
-    public DataFile getConfigFile() {
+    public DataFile<FileConfiguration> getConfigFile() {
         return configFile;
     }
 
