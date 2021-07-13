@@ -35,6 +35,7 @@ import com.github.dig.endervaults.nms.NMSProvider;
 import com.github.dig.endervaults.nms.VaultNMS;
 import com.github.dig.endervaults.nms.v1_11_R1.v1_11_R1NMS;
 import com.github.dig.endervaults.nms.v1_14_R1.v1_14_R1NMS;
+import com.github.dig.endervaults.nms.v1_17_R1.v1_17_R1NMS;
 import com.github.dig.endervaults.nms.v1_8_R3.v1_8_R3NMS;
 import lombok.extern.java.Log;
 import org.bukkit.Bukkit;
@@ -180,6 +181,9 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
             case v1_16_R2:
             case v1_16_R3:
                 bridge = new v1_14_R1NMS();
+                break;
+            case v1_17_R1:
+                bridge = new v1_17_R1NMS();
                 break;
             default:
                 throw new InvalidMinecraftVersionException("Version of Minecraft not supported.");

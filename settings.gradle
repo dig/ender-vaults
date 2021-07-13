@@ -7,13 +7,6 @@
  * in the user manual at https://docs.gradle.org/6.5.1/userguide/multi_project_builds.html
  */
 
+include ":api", ":bukkit", ":nms", ":v1_8_R3", ":v1_11_R1", ":v1_14_R1", ":v1_17_R1"
 rootProject.name = 'EnderVaults'
-
-include 'api'
-include 'bukkit'
-
-include 'nms'
-include 'v1_8_R3'
-include 'v1_11_R1'
-include 'v1_14_R1'
 

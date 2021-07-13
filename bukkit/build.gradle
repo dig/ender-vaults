@@ -9,16 +9,22 @@ repositories {
 }
 
 dependencies {
-    compile project(':api')
+    implementation project(':api')
+    implementation project(':nms')
+    implementation project(':v1_8_R3')
+    implementation project(':v1_11_R1')
+    implementation project(':v1_14_R1')
+    implementation project(':v1_17_R1')
     compileOnly 'org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT'
-    compile 'com.zaxxer:HikariCP:3.4.5'
-    compile 'org.mariadb.jdbc:mariadb-java-client:2.6.2'
-    compile 'de.tr7zw:item-nbt-api:2.7.1'
+    implementation 'com.zaxxer:HikariCP:3.4.5'
+    implementation 'org.mariadb.jdbc:mariadb-java-client:2.6.2'
+    implementation 'de.tr7zw:item-nbt-api:2.8.0'
 }
 
 processResources {
     from(sourceSets.main.resources.srcDirs) {
         expand 'pluginVersion': project.ext.version
+        duplicatesStrategy = 'include'
         include 'plugin.yml'
     }
 }
