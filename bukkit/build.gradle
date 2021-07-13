@@ -37,3 +37,5 @@ shadowJar {
     relocate 'org.mariadb.jdbc', 'com.github.dig.endervaults.lib.mariadb'
     relocate 'org.javatuples', 'com.github.dig.endervaults.lib.javatuples'
 }
+
+build.dependsOn shadowJar
