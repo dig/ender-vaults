@@ -14,6 +14,7 @@ public enum MinecraftVersion {
     v1_15_R1,
     v1_16_R1,
     v1_16_R2,
-    v1_16_R3
+    v1_16_R3,
+    v1_17_R1
 
 }
