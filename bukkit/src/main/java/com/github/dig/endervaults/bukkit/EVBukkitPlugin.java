@@ -62,6 +62,7 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
     private DataStorage dataStorage;
     private VaultPersister persister;
     private BukkitUserPermission permission;
+    private Metrics metrics;
 
     private BukkitTask autoSaveTask;
 
@@ -119,6 +120,7 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
     @Override
     public void onEnable() {
         showStartUpMessage();
+        metrics = new Metrics(this, 12345);
 
         if (!setProviders()) return;
         loadConfiguration();
