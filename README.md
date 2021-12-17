@@ -20,6 +20,8 @@ EnderVaults is a player vault plugin for Spigot / Bukkit.
 
 EnderVaults uses [Gradle](https://gradle.org/).
 
+If you want to skip building via Gradle, you may pay for builds on [Spigot](https://www.spigotmc.org/resources/endervaults-player-vaults-alternative.10307/) or [MC-Market](https://www.mc-market.org/resources/16723/).
+
 ## License
 
 [GNU](LICENSE) &copy; [dig](https://github.com/dig)
