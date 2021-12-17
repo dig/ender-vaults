@@ -15,10 +15,11 @@ dependencies {
     implementation project(':v1_11_R1')
     implementation project(':v1_14_R1')
     implementation project(':v1_17_R1')
+    implementation project(':v1_18_R1')
     compileOnly 'org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT'
     implementation 'com.zaxxer:HikariCP:3.4.5'
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.6.2'
-    implementation 'de.tr7zw:item-nbt-api:2.8.0'
+    implementation 'de.tr7zw:item-nbt-api:2.9.0-SNAPSHOT'
 }
 
 processResources {

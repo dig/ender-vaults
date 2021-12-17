@@ -14,8 +14,11 @@ public interface VaultNMS {
 
   default Class<?> getItemStackClass() throws ClassNotFoundException {
     MinecraftVersion minecraftVersion = NMSProvider.getVersion();
-    return minecraftVersion == MinecraftVersion.v1_17_R1 ?
-        Class.forName("net.minecraft.world.item.ItemStack") :
-        Class.forName("net.minecraft.server." + minecraftVersion.toString() + ".ItemStack");
+
+    try {
+      return Class.forName("net.minecraft.world.item.ItemStack");
+    } catch (ClassNotFoundException e) {
+      return Class.forName("net.minecraft.server." + minecraftVersion + ".ItemStack");
+    }
   }
 }
