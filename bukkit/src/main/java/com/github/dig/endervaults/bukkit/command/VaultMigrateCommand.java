@@ -22,9 +22,10 @@ public class VaultMigrateCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof ConsoleCommandSender) {
             if (args.length == 1) {
-                MigrationPlugins plugin;
+                MigrationPlugins type;
+
                 try {
-                    plugin = MigrationPlugins.valueOf(args[0].toUpperCase());
+                    type = MigrationPlugins.valueOf(args[0].toUpperCase());
                 } catch (IllegalArgumentException e) {
                     sender.sendMessage(ChatColor.RED + "No migration for that plugin, contact us on discord for migration from other plugins.");
                     return true;
@@ -35,14 +36,12 @@ public class VaultMigrateCommand implements CommandExecutor {
                     return true;
                 }
 
-                Optional<Migrator> migratorOptional = plugin.get();
-                if (migratorOptional.isPresent()) {
-                    Migrator migrator = migratorOptional.get();
-                    if (migrator.can()) {
-                        migrator.migrate();
-                    } else {
-                        sender.sendMessage(ChatColor.RED + migrator.response());
-                    }
+                Migrator migrator = type.get();
+
+                if (migrator.can()) {
+                    migrator.migrate();
+                } else {
+                    sender.sendMessage(ChatColor.RED + migrator.response());
                 }
             } else {
                 sender.sendMessage(ChatColor.RED + "Usage: /pvmigrate <plugin>");

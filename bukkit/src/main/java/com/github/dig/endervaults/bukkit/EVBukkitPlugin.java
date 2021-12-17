@@ -139,10 +139,14 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
         if (autoSaveTask != null) {
             autoSaveTask.cancel();
         }
+        
         if (persister != null) {
             persister.save();
         }
-        dataStorage.close();
+
+        if (dataStorage != null) {
+            dataStorage.close();
+        }
     }
 
     private boolean setProviders() {
