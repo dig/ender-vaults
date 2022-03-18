@@ -193,6 +193,7 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
                 bridge = new v1_17_R1NMS();
                 break;
             case v1_18_R1:
+            case v1_18_R2:
                 bridge = new v1_18_R1NMS();
                 break;
             default:
