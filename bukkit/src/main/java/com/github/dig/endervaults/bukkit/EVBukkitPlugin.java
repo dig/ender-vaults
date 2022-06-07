@@ -194,10 +194,11 @@ public class EVBukkitPlugin extends JavaPlugin implements EnderVaultsPlugin {
                 break;
             case v1_18_R1:
             case v1_18_R2:
+            case v1_19_R1:
                 bridge = new v1_18_R1NMS();
                 break;
             default:
-                throw new InvalidMinecraftVersionException("Version of Minecraft not supported.");
+                throw new InvalidMinecraftVersionException("Minecraft " + version.name() + " not supported.");
         }
 
         NMSProvider.set(bridge, version);
