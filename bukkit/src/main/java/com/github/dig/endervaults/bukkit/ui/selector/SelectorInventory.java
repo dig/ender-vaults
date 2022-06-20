@@ -42,7 +42,8 @@ public class SelectorInventory {
     private final Inventory inventory;
 
     public SelectorInventory(UUID ownerUUID, int page) {
-        FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
+        FileConfiguration configuration = plugin.getConfigFile().getConfiguration();
+
         int size = configuration.getInt("selector.rows", 6) * 9;
         this.ownerUUID = ownerUUID;
         this.page = page;
@@ -50,21 +51,24 @@ public class SelectorInventory {
                 configuration.getString("selector.design-mode", SelectorMode.PANE_BY_FILL.toString()));
         this.inventory = Bukkit.createInventory(null, size,
                 plugin.getLanguage().get(Lang.VAULT_SELECTOR_TITLE));
+
         init();
     }
 
     public SelectorInventory(UUID ownerUUID, int page, String title) {
-        FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
+        FileConfiguration configuration = plugin.getConfigFile().getConfiguration();
         int size = configuration.getInt("selector.rows", 6) * 9;
+
         this.ownerUUID = ownerUUID;
         this.page = page;
         this.mode = SelectorMode.valueOf(configuration.getString("selector.design-mode", SelectorMode.PANE_BY_FILL.toString()));
         this.inventory = Bukkit.createInventory(null, size, title);
+
         init();
     }
 
     private void init() {
-        FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
+        FileConfiguration configuration = plugin.getConfigFile().getConfiguration();
 
         ItemStack locked = createLockedItem();
         Player target = Bukkit.getPlayer(ownerUUID);
@@ -106,7 +110,7 @@ public class SelectorInventory {
     }
 
     private ItemStack createUnlockedItem(@Nullable UUID id, int order, int size, int free, int filled, @Nullable Material icon) {
-        FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
+        FileConfiguration configuration = plugin.getConfigFile().getConfiguration();
 
         Material material;
         int data = 0;
@@ -126,14 +130,18 @@ public class SelectorInventory {
         }
 
         ItemStack item = new ItemStack(material, 1);
+
+        // Use old material data method (< 1.13)
         if (useLegacyMaterials && data > 0 && icon == null) {
             item.setDurability((byte) data);
         }
 
         ItemMeta meta = item.getItemMeta();
+
         String title = configuration.getString("selector.template.unlocked.title")
                 .replaceAll("%order", String.valueOf(order));
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', title));
+
         meta.setLore(configuration.getStringList("selector.template.unlocked.lore")
                 .stream()
                 .map(s -> s.replaceAll("%filled_slots", String.valueOf(filled)))
@@ -141,12 +149,14 @@ public class SelectorInventory {
                 .map(s -> s.replaceAll("%free_slots", String.valueOf(free)))
                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                 .collect(Collectors.toList()));
+
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES,
                 ItemFlag.HIDE_UNBREAKABLE,
                 ItemFlag.HIDE_ENCHANTS,
                 ItemFlag.HIDE_DESTROYS,
                 ItemFlag.HIDE_POTION_EFFECTS,
                 ItemFlag.HIDE_PLACED_ON);
+
         item.setItemMeta(meta);
 
         NBTItem nbtItem = new NBTItem(item);
@@ -154,27 +164,34 @@ public class SelectorInventory {
         if (id != null) {
             nbtItem.setString(SelectorConstants.NBT_VAULT_ID, id.toString());
         }
+
         nbtItem.setString(SelectorConstants.NBT_VAULT_OWNER_UUID, ownerUUID.toString());
         nbtItem.setInteger(SelectorConstants.NBT_VAULT_ORDER, order);
+
         return nbtItem.getItem();
     }
 
     private Material getGlass(int filled, int total) {
         double percent = ((double) filled / (double) total) * 100;
-        if (percent >= 100) {
-            return useLegacyMaterials ? Material.valueOf("STAINED_GLASS_PANE") : Material.RED_STAINED_GLASS_PANE;
+
+        if (useLegacyMaterials) {
+            return Material.valueOf("STAINED_GLASS_PANE");
+        } else if (percent >= 100) {
+            return Material.RED_STAINED_GLASS_PANE;
         } else if (percent > 60) {
-            return useLegacyMaterials ? Material.valueOf("STAINED_GLASS_PANE") : Material.ORANGE_STAINED_GLASS_PANE;
+            return Material.ORANGE_STAINED_GLASS_PANE;
         } else if (percent > 30) {
-            return useLegacyMaterials ? Material.valueOf("STAINED_GLASS_PANE") : Material.YELLOW_STAINED_GLASS_PANE;
+            return Material.YELLOW_STAINED_GLASS_PANE;
         } else if (percent > 0) {
-            return useLegacyMaterials ? Material.valueOf("STAINED_GLASS_PANE") : Material.LIME_STAINED_GLASS_PANE;
+            return Material.LIME_STAINED_GLASS_PANE;
         }
-        return useLegacyMaterials ? Material.valueOf("STAINED_GLASS_PANE") : Material.WHITE_STAINED_GLASS_PANE;
+
+        return Material.WHITE_STAINED_GLASS_PANE;
     }
 
     private int getGlassData(int filled, int total) {
         double percent = ((double) filled / (double) total) * 100;
+
         if (percent >= 100) {
             return 14;
         } else if (percent > 60) {
@@ -184,11 +201,12 @@ public class SelectorInventory {
         } else if (percent > 0) {
             return 5;
         }
+
         return 0;
     }
 
     private ItemStack createLockedItem() {
-        FileConfiguration configuration = (FileConfiguration) plugin.getConfigFile().getConfiguration();
+        FileConfiguration configuration = plugin.getConfigFile().getConfiguration();
 
         Material material;
         int data = 0;
@@ -204,27 +222,34 @@ public class SelectorInventory {
         }
 
         ItemStack item = new ItemStack(material, 1);
+
+        // Use old material data method (< 1.13)
         if (useLegacyMaterials && data > 0) {
             item.setDurability((byte) data);
         }
 
         ItemMeta meta = item.getItemMeta();
+
         String title = configuration.getString("selector.template.locked.title");
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', title));
+
         meta.setLore(configuration.getStringList("selector.template.locked.lore")
                         .stream()
                         .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                         .collect(Collectors.toList()));
+
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES,
                 ItemFlag.HIDE_UNBREAKABLE,
                 ItemFlag.HIDE_ENCHANTS,
                 ItemFlag.HIDE_DESTROYS,
                 ItemFlag.HIDE_POTION_EFFECTS,
                 ItemFlag.HIDE_PLACED_ON);
+
         item.setItemMeta(meta);
 
         NBTItem nbtItem = new NBTItem(item);
         nbtItem.setBoolean(SelectorConstants.NBT_VAULT_ITEM, true);
+
         return nbtItem.getItem();
     }
 
