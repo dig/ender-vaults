@@ -6,7 +6,7 @@ EnderVaults is a player vault plugin for Spigot / Bukkit.
 
 ## Features
 
- - Version Support: 1.8 to 1.18.2.
+ - Version Support: 1.8 to 1.19.
  - NBT Support: items which require NBT tags to function are supported.
  - User Interface: easy to use and configurable user interface.
  - Data Storage: variety of different data storage available, flatfile, mysql & mariadb.
