@@ -17,6 +17,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -37,6 +39,10 @@ public class SelectorListener implements Listener {
         Inventory inventory = event.getClickedInventory();
         ItemStack item = event.getCurrentItem();
         ClickType type = event.getClick();
+
+        if (event.getView().getTopInventory().getHolder() instanceof SelectorInventory) {
+            event.setCancelled(true);
+        }
 
         if (inventory != null && item != null && item.getType() != Material.AIR) {
             NBTItem nbtItem = new NBTItem(item);
@@ -91,6 +97,20 @@ public class SelectorListener implements Listener {
             if (nbtItem.hasKey(SelectorConstants.NBT_VAULT_ITEM)) {
                 event.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onDrag(InventoryDragEvent event) {
+        if (event.getView().getTopInventory().getHolder() instanceof SelectorInventory) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onDrag(InventoryInteractEvent event) {
+        if (event.getView().getTopInventory().getHolder() instanceof SelectorInventory) {
+            event.setCancelled(true);
         }
     }
 }

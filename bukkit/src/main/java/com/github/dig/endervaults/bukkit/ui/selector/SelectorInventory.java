@@ -17,6 +17,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -28,7 +29,7 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 @Log
-public class SelectorInventory {
+public class SelectorInventory implements InventoryHolder {
 
     private final EVBukkitPlugin plugin = (EVBukkitPlugin) VaultPluginProvider.getPlugin();
     private final VaultRegistry registry = plugin.getRegistry();
@@ -49,7 +50,7 @@ public class SelectorInventory {
         this.page = page;
         this.mode = SelectorMode.valueOf(
                 configuration.getString("selector.design-mode", SelectorMode.PANE_BY_FILL.toString()));
-        this.inventory = Bukkit.createInventory(null, size,
+        this.inventory = Bukkit.createInventory(this, size,
                 plugin.getLanguage().get(Lang.VAULT_SELECTOR_TITLE));
 
         init();
@@ -62,7 +63,7 @@ public class SelectorInventory {
         this.ownerUUID = ownerUUID;
         this.page = page;
         this.mode = SelectorMode.valueOf(configuration.getString("selector.design-mode", SelectorMode.PANE_BY_FILL.toString()));
-        this.inventory = Bukkit.createInventory(null, size, title);
+        this.inventory = Bukkit.createInventory(this, size, title);
 
         init();
     }
@@ -255,5 +256,10 @@ public class SelectorInventory {
 
     public void launchFor(Player player) {
         player.openInventory(inventory);
+    }
+
+    @Override
+    public Inventory getInventory() {
+        return this.inventory;
     }
 }
