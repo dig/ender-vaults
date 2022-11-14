@@ -40,9 +40,11 @@ public class SelectIconListener implements Listener {
                 switch(selectorMode) {
                     case STATIC: {
                         registry.get(vaultOwnerUUID, vaultID).ifPresent(vault -> vault.getMetadata().put(VaultDefaultMetadata.ICON.getKey(), item.getType().toString()));
+                        break;
                     }
                     case PANE_BY_FILL: {
                         registry.get(vaultOwnerUUID, vaultID).ifPresent(vault -> vault.getMetadata().remove(VaultDefaultMetadata.ICON.getKey()));
+                        break;
                     }
                 }
                 new SelectorInventory(vaultOwnerUUID, 1).launchFor(player);
