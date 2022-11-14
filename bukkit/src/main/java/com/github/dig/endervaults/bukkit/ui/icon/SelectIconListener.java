@@ -1,6 +1,8 @@
 package com.github.dig.endervaults.bukkit.ui.icon;
 
 import com.github.dig.endervaults.api.VaultPluginProvider;
+import com.github.dig.endervaults.api.selector.SelectorMode;
+import com.github.dig.endervaults.api.vault.Vault;
 import com.github.dig.endervaults.api.vault.VaultRegistry;
 import com.github.dig.endervaults.api.vault.metadata.VaultDefaultMetadata;
 import com.github.dig.endervaults.bukkit.ui.selector.SelectorInventory;
@@ -33,8 +35,16 @@ public class SelectIconListener implements Listener {
                 event.setCancelled(true);
                 UUID vaultID = UUID.fromString(nbtItem.getString(SelectIconConstants.NBT_ICON_ID));
                 UUID vaultOwnerUUID = UUID.fromString(nbtItem.getString(SelectIconConstants.NBT_ICON_OWNER_UUID));
+                SelectorMode selectorMode = SelectorMode.valueOf(nbtItem.getString(SelectIconConstants.NBT_ICON_SELECTOR_MODE));
 
-                registry.get(vaultOwnerUUID, vaultID).ifPresent(vault -> vault.getMetadata().put(VaultDefaultMetadata.ICON.getKey(), item.getType().toString()));
+                switch(selectorMode) {
+                    case STATIC: {
+                        registry.get(vaultOwnerUUID, vaultID).ifPresent(vault -> vault.getMetadata().put(VaultDefaultMetadata.ICON.getKey(), item.getType().toString()));
+                    }
+                    case PANE_BY_FILL: {
+                        registry.get(vaultOwnerUUID, vaultID).ifPresent(vault -> vault.getMetadata().remove(VaultDefaultMetadata.ICON.getKey()));
+                    }
+                }
                 new SelectorInventory(vaultOwnerUUID, 1).launchFor(player);
             }
         }

@@ -70,7 +70,9 @@ selector:
       - ARROW
       - APPLE
       - WHEAT
-  # Item designs, how the items look etc.
+    # Item designs, how the items look etc.
+    pane_fill_item:
+      - WHITE_STAINED_GLASS_PANE
   template:
     # Unlocked vault item
     unlocked:
