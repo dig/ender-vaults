@@ -106,11 +106,4 @@ public class SelectorListener implements Listener {
             event.setCancelled(true);
         }
     }
-
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onDrag(InventoryInteractEvent event) {
-        if (event.getView().getTopInventory().getHolder() instanceof SelectorInventory) {
-            event.setCancelled(true);
-        }
-    }
 }

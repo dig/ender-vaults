@@ -9,16 +9,13 @@ import com.github.dig.endervaults.bukkit.vault.BukkitVaultRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -26,10 +23,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BukkitListener implements Listener {
@@ -65,13 +59,24 @@ public class BukkitListener implements Listener {
         Player player = (Player) event.getWhoClicked();
 
         BukkitVaultRegistry registry = (BukkitVaultRegistry) plugin.getRegistry();
-        ItemStack item = event.getCurrentItem();
+        ArrayList<ItemStack> items = new ArrayList<>();
+        items.add(event.getCurrentItem());
         Inventory inventory = event.getInventory();
 
-        if (inventory != null && item != null && isBlacklistEnabled()) {
-            if (!permission.canBypassBlacklist(player) && getBlacklisted().contains(item.getType()) && registry.isVault(inventory)) {
-                player.sendMessage(plugin.getLanguage().get(Lang.BLACKLISTED_ITEM));
-                event.setCancelled(true);
+        if(event.getClick() == ClickType.NUMBER_KEY) {
+            items.add(player.getInventory().getItem(event.getHotbarButton()));
+        }
+
+        if (inventory != null && isBlacklistEnabled()) {
+            if(permission.canBypassBlacklist(player)) return;
+            if(!registry.isVault(inventory)) return;
+
+            for(ItemStack item : items) {
+                if (item != null && getBlacklisted().contains(item.getType())) {
+                    player.sendMessage(plugin.getLanguage().get(Lang.BLACKLISTED_ITEM));
+                    event.setCancelled(true);
+                    return;
+                }
             }
         }
     }
