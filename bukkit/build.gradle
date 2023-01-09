@@ -19,7 +19,7 @@ dependencies {
     compileOnly 'org.spigotmc:spigot:1.19-R0.1-SNAPSHOT'
     implementation 'com.zaxxer:HikariCP:3.4.5'
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.6.2'
-    implementation 'de.tr7zw:item-nbt-api:2.10.0'
+    implementation 'de.tr7zw:item-nbt-api:2.11.1'
 }
 
 processResources {
