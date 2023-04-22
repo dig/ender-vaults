@@ -2,6 +2,7 @@ package com.github.dig.endervaults.bukkit.ui.icon;
 
 import com.github.dig.endervaults.api.VaultPluginProvider;
 import com.github.dig.endervaults.api.lang.Lang;
+import com.github.dig.endervaults.api.selector.SelectorMode;
 import com.github.dig.endervaults.api.vault.Vault;
 import com.github.dig.endervaults.bukkit.EVBukkitPlugin;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -35,36 +36,35 @@ public class SelectIconInventory {
     }
 
     private void init() {
+        int slot;
+        Material material;
         for (String matName : configuration.getStringList("selector.select-icon.items")) {
-            Material material;
             try {
                 material = Material.valueOf(matName);
             } catch (IllegalArgumentException e) {
                 log.log(Level.SEVERE, "[EnderVaults] Unable to find material " + matName + ", skipping...", e);
                 continue;
             }
-
-            ItemStack item = new ItemStack(material, 1);
-            ItemMeta meta = item.getItemMeta();
-            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES,
-                    ItemFlag.HIDE_UNBREAKABLE,
-                    ItemFlag.HIDE_ENCHANTS,
-                    ItemFlag.HIDE_DESTROYS,
-                    ItemFlag.HIDE_POTION_EFFECTS,
-                    ItemFlag.HIDE_PLACED_ON);
-            item.setItemMeta(meta);
-
-            NBTItem nbtItem = new NBTItem(item);
-            nbtItem.setBoolean(SelectIconConstants.NBT_ICON_ITEM, true);
-            nbtItem.setString(SelectIconConstants.NBT_ICON_ID, vault.getId().toString());
-            nbtItem.setString(SelectIconConstants.NBT_ICON_OWNER_UUID, vault.getOwner().toString());
-
-            int slot = inventory.firstEmpty();
-            if (slot > -1) {
-                inventory.setItem(inventory.firstEmpty(), nbtItem.getItem());
-            } else {
-                log.log(Level.INFO, "[EnderVaults] Unable to find available spot to put item in, please reconfigure select icon settings.");
+            slot = inventory.firstEmpty();
+            addItemAt(SelectIconBuilder.fromMaterial(vault, material, SelectorMode.STATIC), slot);
+        }
+        for (String matName : configuration.getStringList("selector.select-icon.pane_fill_item")) {
+            try {
+                material = Material.valueOf(matName);
+            } catch (IllegalArgumentException e) {
+                log.log(Level.SEVERE, "[EnderVaults] Unable to find material " + matName + ", skipping...", e);
+                continue;
             }
+            slot = inventory.firstEmpty();
+            addItemAt(SelectIconBuilder.fromMaterial(vault, material, SelectorMode.PANE_BY_FILL), slot);
+        }
+    }
+
+    private void addItemAt(NBTItem nbtItem, int slot) {
+        if (slot > -1) {
+            inventory.setItem(inventory.firstEmpty(), nbtItem.getItem());
+        } else {
+            log.log(Level.INFO, "[EnderVaults] Unable to find available spot to put item in, please reconfigure select icon settings.");
         }
     }
 
